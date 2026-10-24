@@ -1,0 +1,65 @@
+@import "tailwindcss";
+
+:root {
+	--background: #ffffff;
+	--foreground: #171717;
+}
+
+@theme inline {
+	--color-background: var(--background);
+	--color-foreground: var(--foreground);
+	--font-sans: var(--font-dm-sans);
+	--font-mono: var(--font-geist-mono);
+}
+
+@theme {
+	/* Brand colours sampled from the logo: teal for actions, navy for headings. */
+	--color-primary: #2c6b6f;
+	--color-primary-dark: #1f5155;
+	--color-midnight_text: #13214a;
+	--color-tint: #eef5f5;
+	--color-border: #e2e8ea;
+	--color-footer_stroke: #e2e8ea;
+
+	--container-xl: 1200px;
+
+	--spacing-29: 28rem;
+}
+
+[data-reveal] {
+	opacity: 0;
+	transform: translateY(2rem);
+	transition:
+		opacity 0.7s ease-out,
+		transform 0.7s ease-out;
+}
+
+[data-reveal].is-visible {
+	opacity: 1;
+	transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	[data-reveal] {
+		opacity: 1;
+		transform: none;
+		transition: none;
+	}
+}
+
+html {
+	scroll-behavior: smooth;
+}
+
+/* Visible keyboard focus everywhere; mouse clicks don't trigger :focus-visible. */
+:focus-visible {
+	outline: 2px solid var(--color-primary);
+	outline-offset: 3px;
+	border-radius: 4px;
+}
+
+body {
+	background: var(--background);
+	color: var(--foreground);
+	font-family: var(--font-sans);
+}
