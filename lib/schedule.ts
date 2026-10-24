@@ -1,14 +1,13 @@
-import { cacheLife } from "next/cache";
 import { freeSession, nextCourse } from "@/lib/content";
 
-// Whether each session is still ahead of us. Cached for a few hours so pages stay
-// static but switch to "dates coming soon" on their own once a session has passed.
+// Set in next.config.ts when the site is built, so pages stay fully static. A session counts
+// as past once the build happens after it ends, so redeploy (any push) after each course.
+const builtAt = Number(process.env.BUILD_TIMESTAMP ?? Date.now());
+
+// Whether each session was still ahead of us when the site was built.
 export async function getSchedule() {
-	"use cache";
-	cacheLife("hours");
-	const now = Date.now();
 	return {
-		inPersonUpcoming: now < Date.parse(nextCourse.endDate),
-		tasterUpcoming: now < Date.parse(freeSession.endDate),
+		inPersonUpcoming: builtAt < Date.parse(nextCourse.endDate),
+		tasterUpcoming: builtAt < Date.parse(freeSession.endDate),
 	};
 }

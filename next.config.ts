@@ -5,6 +5,8 @@ const nextConfig: NextConfig = {
 	partialPrefetching: true,
 	// Matches the old WordPress URLs (/about-us/, /contact/).
 	trailingSlash: true,
+	// Build time, used to decide which course dates are still upcoming (see lib/schedule.ts).
+	env: { BUILD_TIMESTAMP: String(Date.now()) },
 	// Pages from the old WordPress site that Google has indexed.
 	async redirects() {
 		return [
