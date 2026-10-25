@@ -3,7 +3,8 @@
 Website for [Ace the OSCE](https://acetheosce.com.au), a small-group, in-person preparation
 course for the ACEM Fellowship OSCE at the Westmead Simulation Centre, Sydney.
 
-Built with Next.js and Tailwind CSS, hosted on Vercel. Every page is static.
+Built with Next.js and Tailwind CSS, hosted on Vercel. Content is edited in
+[Sanity](https://www.sanity.io) and pulled in when the site builds, so every page is static.
 
 ## Running locally
 
@@ -14,7 +15,9 @@ npm install
 npm run dev
 ```
 
-Open http://localhost:3000.
+Open http://localhost:3000. `npm run dev` first fetches the latest published content from
+Sanity into `content/site-content.json` (not committed). To see newly published changes,
+restart it, or run `npm run content`.
 
 Before pushing, check that everything builds:
 
@@ -26,34 +29,38 @@ npm run build
 
 ## Updating content
 
-Almost all text lives in **`lib/content.ts`**. Edit it, commit and push to `main`; Vercel
-rebuilds and redeploys the site automatically.
+All text, dates, links and images are edited in the **Sanity Studio**, not in the code.
+Click **Publish** and the site rebuilds with the change (once the publish webhook is set up;
+until then, redeploy in Vercel or push to `main`).
+
+The Studio sidebar:
+
+| Group | What's there |
+| --- | --- |
+| Courses | **Dates and booking** (the Humanitix link and both courses' dates), the In-person course and Evening Taster card text, the course options section |
+| Pages | Home, The Course, OSCE Guide, About Us, Contact, Privacy Policy, Page not found |
+| People | Faculty, Testimonials |
+| Site-wide | Header, Footer, Contact form, Call to action, Site settings (email, venue, logo, icon, share image) |
 
 ### New course dates
 
-In `lib/content.ts`, update:
+Open **Dates and booking**, update the Humanitix link and the start and end times (Sydney
+time), and publish. Every date and booking button on the site updates together. Once a
+course's end time has passed, the site switches to its "dates to be announced" text on the
+next build.
 
-- `nextCourse` — the in-person course (`date`, `shortDate`, `time`, and ISO `startDate`/`endDate`)
-- `freeSession` — the Evening Taster (`shortDate`, `time`, `startDate`/`endDate`)
-- `site.enrolUrl` — the Humanitix link
-- The matching `date`/`time` in `courseOptions`
+### Running the Studio
 
-Once a session's end date has passed, the site switches to "Next course dates coming soon" on
-the next build. **Push (or redeploy in Vercel) after each course** so that change goes live.
+```bash
+cd studio
+npm install
+npm run dev          # http://localhost:3333
+npx sanity deploy    # publish the Studio for the team (hosted by Sanity)
+```
 
-### Other content
-
-| What | Where |
-| --- | --- |
-| Faculty (names, roles, credentials, bios, photos) | `faculty` in `lib/content.ts`, photos in `public/images/faculty/` |
-| Testimonials | `testimonials` in `lib/content.ts` |
-| FAQs | `faqs` in `lib/content.ts` |
-| Course timeline and "What we cover" | `courseDay` and `curriculum` in `lib/content.ts` |
-| ACEM OSCE guide facts and sitting dates | `lib/osce-facts.ts` (update `lastChecked` when you re-check ACEM's site) |
-| Privacy policy | `app/privacy/page.tsx` |
-
-To link a faculty member's name in any copy to their About Us card, write
-`[Dr Laura Brown](faculty:laura-brown)`.
+The content schema (which fields exist) is code in `studio/schemaTypes/`. If you change it,
+update the matching types in `lib/cms.ts`, and add any new single-instance document to
+`SINGLETONS` in `scripts/fetch-content.mjs`.
 
 ## Environment variables
 
@@ -63,8 +70,10 @@ Set these in Vercel (Project → Settings → Environment Variables). See `.env.
 | --- | --- |
 | `RESEND_API_KEY` | Sends contact form messages (required for the form to work) |
 | `CONTACT_FROM_EMAIL` | Sender address on a domain verified in Resend |
-| `NEXT_PUBLIC_GA_ID` | Google Analytics 4 measurement ID (optional) |
+| `NEXT_PUBLIC_GA_ID` | Google Analytics 4 measurement ID (optional; update the privacy policy if you set it) |
 | `GOOGLE_SITE_VERIFICATION` | Search Console HTML-tag code (optional; DNS verification is preferred) |
+
+Sanity needs no variables: the dataset is public.
 
 ## Deployment notes
 

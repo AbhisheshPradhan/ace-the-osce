@@ -16,6 +16,8 @@ for, and converts visitors to enrolments (currently via Humanitix).
 - Next.js 16 (App Router, TypeScript) with `cacheComponents` and `partialPrefetching` on.
   **This Next.js differs from training data — read `node_modules/next/dist/docs/` first.**
 - Tailwind CSS v4 via `@tailwindcss/postcss` (`postcss.config.mjs`). Theme tokens in `app/globals.css`.
+- Content: **Sanity** (project `f3et2lbb`, dataset `production`, public). Hosted Studio in
+  `studio/` with its own `package.json`; the site itself has no Sanity dependency.
 - Hosting: Vercel (GitHub `AbhisheshPradhan/ace-the-osce`, `main` auto-deploys). Repo is public.
 - Contact form: Next server action → Resend REST API (no SDK). GA4 via `@next/third-parties`.
 - No other runtime dependencies. Don't add one for what the platform already does.
@@ -25,80 +27,95 @@ for, and converts visitors to enrolments (currently via Humanitix).
 - **Every route must be fully static.** The root layout exports `ensureStatic = "navigation"`;
   the build fails if a page needs request-time rendering. **No ISR/revalidation** either — the
   owner explicitly rejected `cacheLife` revalidation. Build output should show plain `○` routes.
-- Course dates are compared against the **build time** (`BUILD_TIMESTAMP` set in
-  `next.config.ts`, read in `lib/schedule.ts`). Pages switch to "dates coming soon" on the next
-  build after a session ends. Any push rebuilds.
+- **Content is fetched at build time only.** `scripts/fetch-content.mjs` runs as `predev` and
+  `prebuild`, writes `content/site-content.json` (gitignored), and pages read it through
+  `getContent()` in `lib/cms.ts`. No request-time fetch, no `use cache`.
+- **Sanity is the only source of content.** Don't put copy, dates, links or images back in the
+  code. Code keeps only interface text (form field ids, "Applications open", breadcrumbs) and
+  code-owned settings in `lib/site.ts`.
+- Course dates are compared against the **build time** (`BUILD_TIMESTAMP` in `next.config.ts`,
+  read in `lib/schedule.ts`). Every booking element (header, mobile menu, hero, course cards,
+  call to action, OSCE Guide banner, Google events) switches on the next build after a course
+  ends. Publishing in Sanity or any push rebuilds.
 - `trailingSlash: true` — keeps the old WordPress URLs (`/about-us/`, `/contact/`) identical.
 - **Light mode only.** Dark mode was deliberately removed; don't reintroduce `dark:` classes.
-- **Facts must be sourced.** Don't invent claims (prizes, pass rates, group sizes, credentials).
-  Exam facts in `lib/osce-facts.ts` come from ACEM's Examinations page and carry a
-  `lastChecked` date. Faculty details: the website (and `lib/content.ts`) is newer than Humanitix.
+- **Facts must be sourced.** Don't invent claims (prizes, pass rates, ratings, group sizes,
+  credentials). Testimonial stars show only when a real rating is entered. The OSCE Guide in
+  Sanity keeps ACEM's source URL and a Last checked date.
 - `.vercel.app` deployments are `noindex` + robots-disallowed; only `https://acetheosce.com.au`
-  is indexable (`isLiveSite` in `lib/content.ts`, derived from `VERCEL_PROJECT_PRODUCTION_URL`).
+  is indexable (`isLiveSite` in `lib/site.ts`, derived from `VERCEL_PROJECT_PRODUCTION_URL`).
+- Google Analytics isn't set up and the privacy policy doesn't mention it. If `NEXT_PUBLIC_GA_ID`
+  is ever set, add analytics and cookie wording back to the Privacy Policy in Sanity.
 
 ## Where things live
 
-- `lib/content.ts` — **all site copy and data**: site info, stats, next course / Evening Taster
-  dates (`nextCourse`, `freeSession`, ISO `startDate`/`endDate`), course timeline (`courseDay`),
-  curriculum, FAQs, course options, faculty, testimonials, `facultySlug()`.
-- `lib/osce-facts.ts` — ACEM OSCE guide facts (stations, eligibility, sittings, fee, FAQs).
-- `lib/schedule.ts` — build-time "is this session upcoming?" check.
+- `studio/` — Sanity Studio. `schemaTypes/` (documents, singletons, reusable objects),
+  `structure.ts` (sidebar: Courses, Pages, People, Site-wide), `constants.ts` (singleton ids,
+  internal page list for link dropdowns), `components/EditElsewhere.tsx` ("Also on this page"
+  notes). Run with `npm run dev` inside `studio/`; publish with `npx sanity deploy`.
+- `scripts/fetch-content.mjs` — fetches published content, resolves references and image assets,
+  fails the build if a singleton is missing. New singleton types must be added to `SINGLETONS`.
+- `lib/cms.ts` — `getContent()`, types mirroring the Studio schema (update both together),
+  `imageUrl()` (Sanity CDN with crop/hotspot), `linkHref()`, `formatAddress()`, `toPlainText()`,
+  date helpers (`formatCourseDate`, `formatShortDate`, `formatTime`, `formatTimeRange`; Sydney
+  time), `facultySlug()` (About Us anchors from names).
+- `lib/site.ts` — code-owned settings: site URL, `isLiveSite`, founding year.
+- `lib/schedule.ts` — build-time "is this course upcoming?" check and `buildYear`.
 - `lib/structured-data.ts` — schema.org Organization + Event JSON-LD (events only if upcoming).
-- `app/` routes: `/` home, `/course/` (full course + events JSON-LD), `/acem-osce/` (exam guide),
-  `/about-us/`, `/contact/` (form + map), `/privacy/` (draft, needs team review), `not-found`,
-  `sitemap.ts`, `robots.ts`, icons (`icon.png`, `apple-icon.png`, `favicon.ico`).
-- `app/contact/actions.ts` — contact form server action (honeypot, validation, echoes values back on error).
+- `app/` routes: `/` home, `/course/` (course + events JSON-LD), `/acem-osce/` (exam guide +
+  Article JSON-LD), `/about-us/`, `/contact/`, `/privacy/` (draft, needs team review),
+  `not-found`, `sitemap.ts`, `robots.ts`, `favicon.ico` (fallback; the site icon is in Sanity).
+- `app/contact/actions.ts` — contact form server action (honeypot, validation, messages from Sanity).
 - `components/` — `Section` (shared vertical rhythm; `tint` = white→tint→white band),
-  `SectionHeading`, `Reveal` (scroll fade-in via IntersectionObserver), `RichText`, `FacultyCard`,
-  `Faq`, `PageHero`, `CallToAction`, `GlobalHeader`/`MobileMenu` (drawer portalled to body because
-  the header's backdrop-blur breaks `position: fixed`), `Analytics`, `JsonLd`, `Logo`, `icons`.
+  `SectionHeading`, `Reveal` (scroll fade-in via IntersectionObserver), `PortableText` (Sanity
+  rich text), `ContactBlock`/`ContactFormCard`/`ContactForm`, `FacultyCard`, `Faq`, `PageHero`,
+  `CallToAction`, `GlobalHeader`/`MobileMenu` (drawer portalled to body because the header's
+  backdrop-blur breaks `position: fixed`), `Analytics`, `JsonLd`, `Logo`, `icons`.
   `components/home/` holds home/course sections.
-- `next.config.ts` — redirects for old WordPress URLs (`/all-courses/` → `/course/`, etc.).
-- `public/images/` — `logo/logo.svg` (traced vector of the original PNG), faculty photos,
-  course images, `simulation-training.jpeg`, `hero/` (home hero tiles). `public/og.png` is the
-  static link-preview image. The hero photos are real course photos from Dr Andrew Coggins
-  (2017 photos from his emergencypedia.com blog, plus `simulation-training.jpeg`).
+- `next.config.ts` — redirects for old WordPress URLs, Sanity CDN `remotePatterns`.
+- All images (logo, icon, share image, hero tiles, faculty, course cards) live in Sanity. The hero
+  photos are real course photos from Dr Andrew Coggins (2017 photos from his emergencypedia.com
+  blog, plus the resuscitation simulation photo).
 
 ## Conventions
 
-- Tabs, double quotes; match surrounding code. No formatter is configured.
+- Tabs, double quotes in the site; the Studio uses its own Prettier style (2 spaces, single
+  quotes, no semicolons). No formatter is configured for the site.
 - Brand: teal `--color-primary #2c6b6f` (buttons/accents, hover `primary-dark`), navy
   `--color-midnight_text #13214a` (headings), `--color-tint #eef5f5`. Font: DM Sans.
 - Body text `text-black/70` (min `/60` for small text — contrast).
 - Alternate `Section tint` between neighbours so backgrounds never double up.
 - Wrap below-the-fold content in `Reveal`; never the hero (LCP).
-- In copy, link faculty mentions with `[Dr Name](faculty:slug)` and render via `RichText`
-  (unknown slugs fail the build). `RichText` also turns the site email into a mailto link.
+- Rich text renders through `PortableText`: bold, italic, web links, faculty links (to the
+  About Us card) and live tags (contact email, next course date and venue). Plain-text mentions
+  of the contact email become mailto links. Client components get plain props, not rich text.
 - Internal links use `Link` without trailing slash (Next adds it). External links get
   `target="_blank" rel="noopener noreferrer"`.
-- Check: `npx tsc --noEmit -p .`, `npx eslint app components lib`, `npx next build` (all routes `○`).
+- Check: `npm run content` (needed once before `tsc`), `npx tsc --noEmit -p .`,
+  `npx eslint app components lib scripts`, `npm run build` (all routes `○`). Studio:
+  `npx tsc --noEmit -p .` and `npx eslint .` inside `studio/`.
 - Commits: `type(scope): imperative summary` + `- ` bullets. No AI attribution lines.
 
 ## Environment variables (see `.env.example`)
 
 `RESEND_API_KEY`, `CONTACT_FROM_EMAIL` (contact form), `NEXT_PUBLIC_GA_ID` (GA4, optional),
 `GOOGLE_SITE_VERIFICATION` (optional; prefer DNS verification), `SITE_URL` (optional override).
+Sanity needs none: the dataset is public and the project id is in the fetch script.
 
-## Status (as of 25 Oct 2026)
+## Status (as of 26 Oct 2026)
 
 - Deployed to Vercel for a showcase on `.vercel.app`; real domain not switched yet.
+- Sanity integration is done: every page reads from Sanity at build time. The one-off seed script
+  that imported the old content was removed (it's in git history); **don't recreate one** — the
+  team edits in the Studio now and a seed would overwrite their changes.
+- Still to do: Vercel deploy hook + Sanity webhook (publish → deploy), `npx sanity deploy` for the
+  hosted Studio, invite the doctors as Editors, a one-page editing guide for them, Draft Mode
+  preview (iteration 2), optional daily scheduled rebuild so passed courses flip without a publish.
 - The 24 July 2026 course has passed, so the site shows "Next course dates coming soon".
-  Awaiting next dates + Humanitix links from the team.
+  Awaiting next dates + Humanitix link from the team.
 - Waiting on the team for: next dates, price, group size, course length (the in-person card
-  says "a full day"; the old "two intensive days" was removed from About Us), day schedule, recent course photos (the in-person course card image
-  is AI-generated; the hero uses 2017 photos), matching headshots (Dr Susie Stapledon has
-  none), recent testimonials (the newest is a 2023 email), faculty FACEM status and
-  any exam prizes, Humanitix API key, DNS access, GA4 ID, privacy policy review.
-
-## Next: Sanity CMS
-
-Planned next step: move editable content into Sanity so the team (doctors) can edit it.
-Constraints to respect:
-- Keep pages **fully static**: fetch Sanity content at build time; trigger rebuilds from a
-  Sanity webhook → Vercel deploy hook on publish. No ISR/revalidation.
-- Candidates to move from `lib/content.ts`: course sessions (dates, Humanitix links), faculty
-  (incl. photos), testimonials, FAQs, curriculum, course timeline, stats. The faculty-link markup
-  (`[text](faculty:slug)`) should become Portable Text references/annotations.
-- Exam facts (`lib/osce-facts.ts`) may also move, keeping a source URL + last-checked field.
-- Embedded Studio vs hosted Studio is undecided; an embedded `/studio` route is dynamic and
-  must sit outside `ensureStatic` (route group with `ensureStatic = false`).
+  says "a full day"; the old "two intensive days" was removed from About Us), day schedule,
+  recent course photos (the in-person course card image is AI-generated; the hero uses 2017
+  photos), matching headshots (Dr Susie Stapledon has none), recent testimonials (the newest is
+  a 2023 email), faculty FACEM status and any exam prizes, Humanitix API key, DNS access, GA4
+  ID, privacy policy review.
