@@ -1,5 +1,7 @@
 import type {StructureBuilder, StructureResolver} from 'sanity/structure'
 import {CommentIcon} from '@sanity/icons/Comment'
+import {HelpCircleIcon} from '@sanity/icons/HelpCircle'
+import {HelpPane} from './components/HelpPane'
 import {singletons, type SingletonType} from './constants'
 
 // A sidebar item that opens a singleton's form directly, with no list in between.
@@ -17,6 +19,12 @@ export const structure: StructureResolver = (S) =>
   S.list()
     .title('Content')
     .items([
+      S.listItem()
+        .title('How to update the website')
+        .id('help')
+        .icon(HelpCircleIcon)
+        .child(S.component(HelpPane).id('help').title('How to update the website')),
+
       S.divider().title('Courses'),
       singleton(S, 'courseDates'),
       singleton(S, 'inPersonCourse'),
