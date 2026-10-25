@@ -1,36 +1,74 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Ace the OSCE
 
-## Getting Started
+Website for [Ace the OSCE](https://acetheosce.com.au), a small-group, in-person preparation
+course for the ACEM Fellowship OSCE at the Westmead Simulation Centre, Sydney.
 
-First, run the development server:
+Built with Next.js and Tailwind CSS, hosted on Vercel. Every page is static.
+
+## Running locally
+
+Requires Node.js 20 or later.
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Before pushing, check that everything builds:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npx tsc --noEmit -p .
+npm run lint
+npm run build
+```
 
-## Learn More
+## Updating content
 
-To learn more about Next.js, take a look at the following resources:
+Almost all text lives in **`lib/content.ts`**. Edit it, commit and push to `main`; Vercel
+rebuilds and redeploys the site automatically.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### New course dates
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+In `lib/content.ts`, update:
 
-## Deploy on Vercel
+- `nextCourse` — the in-person course (`date`, `shortDate`, `time`, and ISO `startDate`/`endDate`)
+- `freeSession` — the Evening Taster (`shortDate`, `time`, `startDate`/`endDate`)
+- `site.enrolUrl` — the Humanitix link
+- The matching `date`/`time` in `courseOptions`
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Once a session's end date has passed, the site switches to "Next course dates coming soon" on
+the next build. **Push (or redeploy in Vercel) after each course** so that change goes live.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Other content
+
+| What | Where |
+| --- | --- |
+| Faculty (names, roles, credentials, bios, photos) | `faculty` in `lib/content.ts`, photos in `public/images/faculty/` |
+| Testimonials | `testimonials` in `lib/content.ts` |
+| FAQs | `faqs` in `lib/content.ts` |
+| Course timeline and "What we cover" | `courseDay` and `curriculum` in `lib/content.ts` |
+| ACEM OSCE guide facts and sitting dates | `lib/osce-facts.ts` (update `lastChecked` when you re-check ACEM's site) |
+| Privacy policy | `app/privacy/page.tsx` |
+
+To link a faculty member's name in any copy to their About Us card, write
+`[Dr Laura Brown](faculty:laura-brown)`.
+
+## Environment variables
+
+Set these in Vercel (Project → Settings → Environment Variables). See `.env.example`.
+
+| Variable | Purpose |
+| --- | --- |
+| `RESEND_API_KEY` | Sends contact form messages (required for the form to work) |
+| `CONTACT_FROM_EMAIL` | Sender address on a domain verified in Resend |
+| `NEXT_PUBLIC_GA_ID` | Google Analytics 4 measurement ID (optional) |
+| `GOOGLE_SITE_VERIFICATION` | Search Console HTML-tag code (optional; DNS verification is preferred) |
+
+## Deployment notes
+
+- `.vercel.app` deployments are hidden from search engines. The site becomes indexable
+  automatically once `acetheosce.com.au` is the project's production domain in Vercel.
+- Old WordPress URLs are redirected in `next.config.ts`.
+- See `CLAUDE.md` for architecture decisions and conventions.
