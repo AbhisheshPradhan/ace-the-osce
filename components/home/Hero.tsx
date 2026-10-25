@@ -7,7 +7,8 @@ import {
 	ClockIcon,
 	MapPinIcon,
 } from "@/components/icons";
-import { freeSession, nextCourse, site, stats } from "@/lib/content";
+import { formatShortDate, formatTime, formatTimeRange, getContent } from "@/lib/cms";
+import { site, stats } from "@/lib/content";
 import { getSchedule } from "@/lib/schedule";
 
 // Home page hero: text on the left, a mosaic of photo and stat tiles on the right (modelled
@@ -64,21 +65,23 @@ function StatTile({
 }
 
 export default async function Hero() {
+	const { courseDates, inPersonCourse } = await getContent();
+	const { inPerson, taster } = courseDates;
 	const { inPersonUpcoming, tasterUpcoming } = await getSchedule();
 	const keyFacts = [
 		{
 			icon: CalendarIcon,
 			text: inPersonUpcoming
-				? `${nextCourse.shortDate} · ${nextCourse.time}`
+				? `${formatShortDate(inPerson.startDate)} · ${formatTimeRange(inPerson.startDate, inPerson.endDate)}`
 				: "Next course dates coming soon",
 		},
-		{ icon: MapPinIcon, text: `${nextCourse.venue}, Sydney` },
+		{ icon: MapPinIcon, text: inPersonCourse.venue },
 		{ icon: CheckIcon, text: "Payment plans available" },
 		...(tasterUpcoming
 			? [
 					{
 						icon: ClockIcon,
-						text: `Free online Evening Taster · ${freeSession.shortDate}, ${freeSession.time}`,
+						text: `Free online Evening Taster · ${formatShortDate(taster.startDate, { year: false })}, ${formatTime(taster.startDate)}`,
 					},
 				]
 			: []),
@@ -119,7 +122,7 @@ export default async function Hero() {
 					<div className="mt-10 flex flex-wrap gap-4">
 						{inPersonUpcoming ? (
 							<a
-								href={site.enrolUrl}
+								href={courseDates.bookingUrl}
 								target="_blank"
 								rel="noopener noreferrer"
 								className="inline-flex items-center gap-2 bg-primary border border-primary px-6 py-3 rounded-lg text-white text-lg hover:bg-primary-dark"

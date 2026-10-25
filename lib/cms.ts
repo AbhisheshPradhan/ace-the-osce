@@ -319,3 +319,32 @@ export function toPlainText(value: RichText, { siteSettings, courseDates, inPers
 		)
 		.join("\n\n");
 }
+
+const SYDNEY = "Australia/Sydney";
+
+// "Fri 24 July 2026", or "Thu 25 June" without the year.
+export function formatShortDate(iso: string, { year = true } = {}) {
+	return new Date(iso).toLocaleDateString("en-AU", {
+		timeZone: SYDNEY,
+		weekday: "short",
+		day: "numeric",
+		month: "long",
+		...(year && { year: "numeric" }),
+	});
+}
+
+// "8:00am", in Sydney time.
+export function formatTime(iso: string) {
+	const parts = new Intl.DateTimeFormat("en-AU", {
+		timeZone: SYDNEY,
+		hour: "numeric",
+		minute: "2-digit",
+	}).formatToParts(new Date(iso));
+	const part = (type: string) => parts.find((p) => p.type === type)?.value ?? "";
+	return `${part("hour")}:${part("minute")}${part("dayPeriod").toLowerCase()}`;
+}
+
+// "8:00am–5:00pm"
+export function formatTimeRange(start: string, end: string) {
+	return `${formatTime(start)}–${formatTime(end)}`;
+}

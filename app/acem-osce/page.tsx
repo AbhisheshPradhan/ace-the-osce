@@ -7,7 +7,9 @@ import Reveal from "@/components/Reveal";
 import Section from "@/components/Section";
 import SectionHeading from "@/components/SectionHeading";
 import { ArrowRightIcon, CheckIcon } from "@/components/icons";
-import { nextCourse, site } from "@/lib/content";
+import PortableText from "@/components/PortableText";
+import { getContent } from "@/lib/cms";
+import { site } from "@/lib/content";
 import { getSchedule } from "@/lib/schedule";
 import {
 	eligibility,
@@ -43,6 +45,8 @@ const structuredData = {
 };
 
 export default async function AcemOsceGuide() {
+	const { courseDates, osceGuidePage } = await getContent();
+	const { banner } = osceGuidePage;
 	const { inPersonUpcoming } = await getSchedule();
 
 	return (
@@ -227,25 +231,19 @@ export default async function AcemOsceGuide() {
 			<Section spacing="bottom">
 				<div className="container mx-auto max-w-7xl px-6 lg:px-4">
 					<Reveal className="rounded-3xl bg-primary px-8 py-14 sm:px-14 text-center text-white">
-						<h2 className="text-3xl sm:text-4xl font-semibold">
-							Practise under exam conditions
-						</h2>
-						<p className="mt-4 mx-auto max-w-2xl text-lg text-white/80">
-							{inPersonUpcoming
-								? `Our next in-person course is on ${nextCourse.date} at the ${nextCourse.venue}`
-								: `Our next in-person course dates will be announced soon. Each course runs at the ${nextCourse.venue}`}
-							, with trial stations, individual coaching and
-							video feedback from FACEM faculty.
-						</p>
+						<h2 className="text-3xl sm:text-4xl font-semibold">{banner.heading}</h2>
+						<div className="mt-4 mx-auto max-w-2xl text-lg text-white/80">
+							<PortableText value={inPersonUpcoming ? banner.textUpcoming : banner.textNoDates} />
+						</div>
 						<div className="mt-8 flex flex-wrap justify-center gap-4">
 							{inPersonUpcoming && (
 								<a
-									href={site.enrolUrl}
+									href={courseDates.bookingUrl}
 									target="_blank"
 									rel="noopener noreferrer"
 									className="inline-flex items-center gap-2 bg-white px-6 py-3 rounded-lg text-primary font-medium hover:bg-tint"
 								>
-									Enrol now
+									{banner.enrolLabel}
 									<ArrowRightIcon className="h-5 w-5" />
 								</a>
 							)}
@@ -257,7 +255,7 @@ export default async function AcemOsceGuide() {
 										: "inline-flex items-center px-6 py-3 rounded-lg bg-white text-primary font-medium hover:bg-tint"
 								}
 							>
-								See course options
+								{banner.courseLinkLabel}
 							</Link>
 						</div>
 					</Reveal>

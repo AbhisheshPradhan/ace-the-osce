@@ -6,12 +6,12 @@ import CourseOptions from "@/components/home/CourseOptions";
 import FacultyPreview from "@/components/home/FacultyPreview";
 import Hero from "@/components/home/Hero";
 import Testimonials from "@/components/home/Testimonials";
-import { organization } from "@/lib/structured-data";
+import { getOrganization } from "@/lib/structured-data";
 
-export default function Home() {
+export default async function Home() {
 	return (
 		<>
-			<JsonLd data={{ "@context": "https://schema.org", ...organization }} />
+			<JsonLd data={{ "@context": "https://schema.org", ...(await getOrganization()) }} />
 			<Hero />
 			<AboutCourse />
 			<CourseOptions showDetailsLink />

@@ -9,7 +9,7 @@ import CourseOptions from "@/components/home/CourseOptions";
 import Testimonials from "@/components/home/Testimonials";
 import { ArrowRightIcon } from "@/components/icons";
 import { faqs } from "@/lib/content";
-import { getUpcomingEvents, organization } from "@/lib/structured-data";
+import { getOrganization, getUpcomingEvents } from "@/lib/structured-data";
 
 export const metadata: Metadata = {
 	title: "ACEM OSCE Preparation Course in Sydney",
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
 export default async function CoursePage() {
 	const structuredData = {
 		"@context": "https://schema.org",
-		"@graph": [organization, ...(await getUpcomingEvents())],
+		"@graph": [await getOrganization(), ...(await getUpcomingEvents())],
 	};
 
 	return (

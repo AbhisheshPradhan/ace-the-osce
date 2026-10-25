@@ -1,78 +1,79 @@
-import { freeSession, nextCourse, site } from "@/lib/content";
+import { getContent, imageUrl, toPlainText, type Content, type Course } from "@/lib/cms";
+import { site } from "@/lib/content";
 import { getSchedule } from "@/lib/schedule";
 
-// schema.org data for search engines (Google event listings, organisation details).
+// schema.org data for search engines (Google event listings, organisation details), built
+// from the content in Sanity.
 
 const organizationId = `${site.url}/#organization`;
 
-export const organization = {
-	"@type": "EducationalOrganization",
-	"@id": organizationId,
-	name: site.name,
-	url: site.url,
-	email: site.email,
-	foundingDate: String(site.foundedYear),
-};
+export async function getOrganization() {
+	const { siteSettings } = await getContent();
+	return {
+		"@type": "EducationalOrganization",
+		"@id": organizationId,
+		name: siteSettings.siteName,
+		url: site.url,
+		email: siteSettings.email,
+		foundingDate: String(site.foundedYear),
+	};
+}
 
-const place = {
-	"@type": "Place",
-	name: `${site.location.name}, Westmead Hospital`,
-	address: {
-		"@type": "PostalAddress",
-		streetAddress: site.location.streetAddress,
-		addressLocality: site.location.locality,
-		addressRegion: site.location.region,
-		postalCode: site.location.postcode,
-		addressCountry: "AU",
-	},
-};
-
-const inPersonEvent = {
-	"@type": "Event",
-	name: "Ace the OSCE: In-Person ACEM OSCE Course",
-	description:
-		"A full day of coached ACEM Fellowship OSCE practice at the Westmead Simulation Centre, with trial stations, individual coaching and video feedback.",
-	startDate: nextCourse.startDate,
-	endDate: nextCourse.endDate,
-	eventStatus: "https://schema.org/EventScheduled",
-	eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
-	location: place,
-	image: [`${site.url}/images/course/in-person-course.jpg`],
-	organizer: { "@id": organizationId },
-	offers: {
-		"@type": "Offer",
-		url: site.enrolUrl,
-		availability: "https://schema.org/InStock",
-	},
-};
-
-const tasterEvent = {
-	"@type": "Event",
-	name: "Ace the OSCE: Evening Taster (Tips and Tricks)",
-	description:
-		"A free online introduction to ACEM OSCE preparation, with sample stations, group discussion and practical advice.",
-	startDate: freeSession.startDate,
-	endDate: freeSession.endDate,
-	eventStatus: "https://schema.org/EventScheduled",
-	eventAttendanceMode: "https://schema.org/OnlineEventAttendanceMode",
-	isAccessibleForFree: true,
-	location: { "@type": "VirtualLocation", url: site.enrolUrl },
-	image: [`${site.url}/images/course/online-session.jpeg`],
-	organizer: { "@id": organizationId },
-	offers: {
-		"@type": "Offer",
-		url: site.enrolUrl,
-		price: 0,
-		priceCurrency: "AUD",
-		availability: "https://schema.org/InStock",
-	},
-};
+function event(
+	content: Content,
+	course: Course,
+	dates: { startDate: string; endDate: string },
+	online: boolean,
+) {
+	const { siteSettings, courseDates } = content;
+	const { location } = siteSettings;
+	return {
+		"@type": "Event",
+		name: `${siteSettings.siteName}: ${course.title}`,
+		description: toPlainText(course.description.slice(0, 1), content),
+		startDate: dates.startDate,
+		endDate: dates.endDate,
+		eventStatus: "https://schema.org/EventScheduled",
+		eventAttendanceMode: online
+			? "https://schema.org/OnlineEventAttendanceMode"
+			: "https://schema.org/OfflineEventAttendanceMode",
+		location: online
+			? { "@type": "VirtualLocation", url: courseDates.bookingUrl }
+			: {
+					"@type": "Place",
+					name: location.name,
+					address: {
+						"@type": "PostalAddress",
+						streetAddress: location.streetAddress,
+						addressLocality: location.locality,
+						addressRegion: location.region,
+						postalCode: location.postcode,
+						addressCountry: "AU",
+					},
+				},
+		image: [imageUrl(course.image, { width: 1200, height: 675, format: "jpg" })],
+		organizer: { "@id": organizationId },
+		offers: {
+			"@type": "Offer",
+			url: courseDates.bookingUrl,
+			availability: "https://schema.org/InStock",
+			// The Evening Taster is free.
+			...(online && { price: 0, priceCurrency: "AUD" }),
+		},
+		...(online && { isAccessibleForFree: true }),
+	};
+}
 
 // Only advertise events that haven't happened yet.
 export async function getUpcomingEvents() {
+	const content = await getContent();
 	const { inPersonUpcoming, tasterUpcoming } = await getSchedule();
 	return [
-		...(inPersonUpcoming ? [inPersonEvent] : []),
-		...(tasterUpcoming ? [tasterEvent] : []),
+		...(inPersonUpcoming
+			? [event(content, content.inPersonCourse, content.courseDates.inPerson, false)]
+			: []),
+		...(tasterUpcoming
+			? [event(content, content.eveningTaster, content.courseDates.taster, true)]
+			: []),
 	];
 }
