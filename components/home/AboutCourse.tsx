@@ -59,8 +59,8 @@ export default function AboutCourse() {
 					className="relative aspect-4/3 overflow-hidden rounded-3xl shadow-2xl"
 				>
 					<Image
-						src="/images/simulation-training.jpeg"
-						alt="Emergency team running a resuscitation simulation on a manikin while a colleague holds up a “Quiet please” sign"
+						src="/images/communication-station-laura.jpg"
+						alt="Dr Laura Brown and a candidate during a communication station in the simulation room"
 						fill
 						sizes="(min-width: 1024px) 50vw, 100vw"
 						className="object-cover"
