@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Fragment, type ReactNode } from "react";
 import {
 	type Block,
+	facultySlug,
 	formatCourseDate,
 	getContent,
 	type LiveValue,
@@ -9,7 +10,6 @@ import {
 	type RichText,
 	type Span,
 } from "@/lib/cms";
-import { facultySlug } from "@/lib/content";
 
 const linkClass =
 	"font-medium text-primary underline decoration-primary/30 underline-offset-2 hover:decoration-primary";

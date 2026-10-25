@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // The Sanity Studio has its own ESLint config (run `npx eslint .` inside studio/).
+    "studio/**",
   ]),
 ]);
 

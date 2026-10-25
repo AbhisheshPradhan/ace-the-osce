@@ -5,7 +5,7 @@ import GlobalHeader from "@/components/GlobalHeader";
 import Analytics from "@/components/Analytics";
 import Footer from "@/components/Footer";
 import { getContent, imageUrl } from "@/lib/cms";
-import { isLiveSite, site } from "@/lib/content";
+import { isLiveSite, site } from "@/lib/site";
 
 const dmSans = DM_Sans({
 	variable: "--font-dm-sans",

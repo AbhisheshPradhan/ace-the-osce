@@ -1,5 +1,5 @@
 import { getContent, imageUrl, toPlainText, type Content, type Course } from "@/lib/cms";
-import { site } from "@/lib/content";
+import { site } from "@/lib/site";
 import { getSchedule } from "@/lib/schedule";
 
 // schema.org data for search engines (Google event listings, organisation details), built

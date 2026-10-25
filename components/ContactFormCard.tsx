@@ -4,7 +4,7 @@ import { getContent } from "@/lib/cms";
 // The contact form in its card, as shown on the Contact and Home pages. Wording comes from
 // Contact form in Sanity; the "Which sitting?" choices from the OSCE Guide's sittings.
 export default async function ContactFormCard({ className = "" }: { className?: string }) {
-	const { contactForm, osceGuidePage } = await getContent();
+	const { contactForm, osceGuidePage, siteSettings } = await getContent();
 	// Only the form's own wording goes to the browser: the rich-text error messages stay on the
 	// server (the action sends them as text) and the box labels are used by ContactBlock.
 	const {
@@ -27,6 +27,7 @@ export default async function ContactFormCard({ className = "" }: { className?: 
 			<ContactForm
 				sittings={osceGuidePage.sittings.items.map((s) => s.sitting)}
 				text={text}
+				email={siteSettings.email}
 			/>
 		</div>
 	);

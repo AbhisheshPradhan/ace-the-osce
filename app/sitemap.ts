@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { site } from "@/lib/content";
+import { site } from "@/lib/site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
 	return ["/", "/course/", "/acem-osce/", "/about-us/", "/contact/", "/privacy/"].map((path) => ({

@@ -9,7 +9,7 @@ import Section from "@/components/Section";
 import SectionHeading from "@/components/SectionHeading";
 import { ArrowRightIcon, CheckIcon } from "@/components/icons";
 import { getContent, imageUrl } from "@/lib/cms";
-import { site } from "@/lib/content";
+import { site } from "@/lib/site";
 import { getSchedule } from "@/lib/schedule";
 
 export async function generateMetadata(): Promise<Metadata> {

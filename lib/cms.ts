@@ -348,3 +348,15 @@ export function formatTime(iso: string) {
 export function formatTimeRange(start: string, end: string) {
 	return `${formatTime(start)}–${formatTime(end)}`;
 }
+
+// URL fragment for a faculty member's About Us card, from their name:
+// "Dr Úna Nic Ionmhain" -> "una-nic-ionmhain", as in /about-us/#una-nic-ionmhain.
+export function facultySlug(name: string) {
+	return name
+		.replace(/^(Dr|A\/Prof)\.?\s+/, "")
+		.normalize("NFD")
+		.replace(/[\u0300-\u036f]/g, "")
+		.toLowerCase()
+		.replace(/[^a-z0-9]+/g, "-")
+		.replace(/^-|-$/g, "");
+}

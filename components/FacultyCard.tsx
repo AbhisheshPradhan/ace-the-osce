@@ -1,6 +1,5 @@
 import FacultyAvatar from "@/components/FacultyAvatar";
-import type { Faculty } from "@/lib/cms";
-import { facultySlug } from "@/lib/content";
+import { type Faculty, facultySlug } from "@/lib/cms";
 
 export default function FacultyCard({
 	member,

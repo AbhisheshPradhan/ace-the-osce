@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { useActionState } from "react";
 import { type ContactState, sendContactMessage } from "@/app/contact/actions";
-import RichText from "@/components/RichText";
 import { CheckIcon } from "@/components/icons";
 import type { Content } from "@/lib/cms";
 
@@ -21,9 +20,11 @@ const inputClass =
 export default function ContactForm({
 	sittings,
 	text,
+	email,
 }: {
 	sittings: string[];
 	text: ContactFormText;
+	email: string;
 }) {
 	const [state, formAction, pending] = useActionState(
 		sendContactMessage,
@@ -139,7 +140,16 @@ export default function ContactForm({
 			</div>
 			{state.message && (
 				<p role="alert" className="rounded-lg bg-red-50 px-4 py-3 text-red-800">
-					<RichText text={state.message} />
+					{state.message.split(email).flatMap((part, i) =>
+						i === 0
+							? [part]
+							: [
+									<a key={i} href={`mailto:${email}`} className="font-medium underline break-all">
+										{email}
+									</a>,
+									part,
+								],
+					)}
 				</p>
 			)}
 			<div className="flex flex-wrap items-center gap-4">
