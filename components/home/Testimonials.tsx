@@ -19,16 +19,21 @@ export default function Testimonials() {
 					{testimonials.map((testimonial, i) => (
 						<Reveal key={testimonial.quote} delay={i * 150}>
 							<figure className="flex h-full flex-col rounded-3xl bg-white p-8 shadow-lg border border-border">
-								<div
-									className="flex gap-1 text-yellow-500"
-									role="img"
-									aria-label="Rated 5 out of 5"
-								>
-									{Array.from({ length: 5 }, (_, j) => (
-										<StarIcon key={j} className="h-5 w-5" />
-									))}
-								</div>
-								<blockquote className="mt-6 flex-1 text-lg text-black/70">
+								{testimonial.rating && (
+									<div
+										className="mb-6 flex gap-1 text-yellow-500"
+										role="img"
+										aria-label={`Rated ${testimonial.rating} out of 5`}
+									>
+										{Array.from({ length: 5 }, (_, j) => (
+											<StarIcon
+												key={j}
+												className={`h-5 w-5 ${j < testimonial.rating! ? "" : "text-black/15"}`}
+											/>
+										))}
+									</div>
+								)}
+								<blockquote className="flex-1 text-lg text-black/70">
 									“<RichText text={testimonial.quote} />”
 								</blockquote>
 								<figcaption className="mt-6 font-medium text-midnight_text">

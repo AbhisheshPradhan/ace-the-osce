@@ -55,7 +55,9 @@ for, and converts visitors to enrolments (currently via Humanitix).
   `components/home/` holds home/course sections.
 - `next.config.ts` — redirects for old WordPress URLs (`/all-courses/` → `/course/`, etc.).
 - `public/images/` — `logo/logo.svg` (traced vector of the original PNG), faculty photos,
-  course images, `simulation-training.jpeg`. `public/og.png` is the static link-preview image.
+  course images, `simulation-training.jpeg`, `hero/` (home hero tiles). `public/og.png` is the
+  static link-preview image. The hero photos are real course photos from Dr Andrew Coggins
+  (2017 photos from his emergencypedia.com blog, plus `simulation-training.jpeg`).
 
 ## Conventions
 
@@ -82,9 +84,10 @@ for, and converts visitors to enrolments (currently via Humanitix).
 - Deployed to Vercel for a showcase on `.vercel.app`; real domain not switched yet.
 - The 24 July 2026 course has passed, so the site shows "Next course dates coming soon".
   Awaiting next dates + Humanitix links from the team.
-- Waiting on the team for: next dates, price, group size, one day vs two (About Us says "two
-  intensive days"), day schedule, real course photos (hero and in-person images are AI-generated),
-  matching headshots (Dr Susie Stapledon has none), recent testimonials, faculty FACEM status and
+- Waiting on the team for: next dates, price, group size, course length (the in-person card
+  says "a full day"; the old "two intensive days" was removed from About Us), day schedule, recent course photos (the in-person course card image
+  is AI-generated; the hero uses 2017 photos), matching headshots (Dr Susie Stapledon has
+  none), recent testimonials (the newest is a 2023 email), faculty FACEM status and
   any exam prizes, Humanitix API key, DNS access, GA4 ID, privacy policy review.
 
 ## Next: Sanity CMS

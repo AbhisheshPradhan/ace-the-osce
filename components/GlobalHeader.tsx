@@ -31,7 +31,7 @@ export default async function GlobalHeader() {
 				<div className="flex items-center gap-2 sm:gap-4">
 					{cta.external ? (
 						<a
-							className="bg-primary border border-primary px-3 py-1.5 text-sm sm:px-4 sm:py-2 sm:text-base rounded-lg text-white hover:bg-primary-dark"
+							className="inline-flex min-h-11 items-center bg-primary border border-primary px-4 text-sm sm:text-base rounded-lg text-white hover:bg-primary-dark"
 							href={cta.href}
 							target="_blank"
 							rel="noopener noreferrer"
@@ -40,7 +40,7 @@ export default async function GlobalHeader() {
 						</a>
 					) : (
 						<Link
-							className="bg-primary border border-primary px-3 py-1.5 text-sm sm:px-4 sm:py-2 sm:text-base rounded-lg text-white hover:bg-primary-dark"
+							className="inline-flex min-h-11 items-center bg-primary border border-primary px-4 text-sm sm:text-base rounded-lg text-white hover:bg-primary-dark"
 							href={cta.href}
 						>
 							{cta.label}

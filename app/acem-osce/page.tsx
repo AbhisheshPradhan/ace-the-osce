@@ -238,18 +238,24 @@ export default async function AcemOsceGuide() {
 							video feedback from FACEM faculty.
 						</p>
 						<div className="mt-8 flex flex-wrap justify-center gap-4">
-							<a
-								href={site.enrolUrl}
-								target="_blank"
-								rel="noopener noreferrer"
-								className="inline-flex items-center gap-2 bg-white px-6 py-3 rounded-lg text-primary font-medium hover:bg-tint"
-							>
-								Enrol now
-								<ArrowRightIcon className="h-5 w-5" />
-							</a>
+							{inPersonUpcoming && (
+								<a
+									href={site.enrolUrl}
+									target="_blank"
+									rel="noopener noreferrer"
+									className="inline-flex items-center gap-2 bg-white px-6 py-3 rounded-lg text-primary font-medium hover:bg-tint"
+								>
+									Enrol now
+									<ArrowRightIcon className="h-5 w-5" />
+								</a>
+							)}
 							<Link
 								href="/course"
-								className="inline-flex items-center px-6 py-3 rounded-lg border border-white text-white hover:bg-white/10"
+								className={
+									inPersonUpcoming
+										? "inline-flex items-center px-6 py-3 rounded-lg border border-white text-white hover:bg-white/10"
+										: "inline-flex items-center px-6 py-3 rounded-lg bg-white text-primary font-medium hover:bg-tint"
+								}
 							>
 								See course options
 							</Link>

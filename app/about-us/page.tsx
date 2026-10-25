@@ -37,10 +37,9 @@ export default function AboutUs() {
 						</p>
 						<p>
 							Our boutique, high-yield course is designed specifically to give
-							candidates the edge they need. Delivered over two intensive days,
-							the course combines expert guidance with highly personalised
-							feedback in a supportive, high-teacher-to-participant
-							environment.
+							candidates the edge they need. The course combines expert guidance
+							with highly personalised feedback in a supportive,
+							high-teacher-to-participant environment.
 						</p>
 						<p>
 							With small group sizes, individualised attention, and a track

@@ -270,7 +270,15 @@ export const faculty: FacultyMember[] = [
 	},
 ];
 
-export const testimonials = [
+// Newest first. The 2023 quote is from an email to Dr Coggins; the 2017–18 quotes are from the
+// course feedback survey (both published on emergencypedia.com). Only set `rating` when the
+// person actually gave one: stars are shown only then.
+export const testimonials: { quote: string; attribution: string; rating?: number }[] = [
+	{
+		quote:
+			"I passed the recent OSCEs. Ace the OSCE was awesome and really helped me in a lot of ways about sticking to structure and improve my station planning and also implementation of structures that were already in my head. This was my second attempt and I would like to thank everyone involved.",
+		attribution: "Course participant who passed the OSCE, 10/2023",
+	},
 	{
 		quote:
 			"Multiple stations under exam conditions was amazing. Forced to have a structure to entering a room I didn't think I would get anything right in. SCBDs were the most terrifying - in a good way! Really excellent to get immediate feedback instead of ruminating. Loved [Laura's](faculty:laura-brown) session, huge amount of intel in short space of time, well delivered.",
@@ -285,5 +293,15 @@ export const testimonials = [
 		quote:
 			"I had been terrified of the OSCE because I didn't really have a framework for how to tackle preparing for it. [Dr Coggins'](faculty:andrew-coggins) insight around these stations has been very helpful.",
 		attribution: "Course participant, 02/2022",
+	},
+	{
+		quote:
+			"Brilliant course - thank you very much to the fantastic faculty for all of the time you dedicated to putting this course together for us!",
+		attribution: "Course participant, 04/2018",
+	},
+	{
+		quote:
+			"Really well set up course specific to the OSCE, found it very useful and really have no negative feedback. Thanks!",
+		attribution: "Course participant, 10/2017",
 	},
 ];
