@@ -194,7 +194,7 @@ async function main() {
     ),
   }
   const logo = {_type: 'image', asset: await upload('public/images/logo/logo.svg')}
-  const siteIcon = {_type: 'image', asset: await upload('app/icon.png')}
+  const siteIcon = {_type: 'image', asset: await upload('public/images/logo/icon.png')}
   const shareImage = await image(
     'public/og.png',
     'Ace the OSCE: ACEM Fellowship OSCE preparation course',
@@ -409,9 +409,6 @@ async function main() {
         description:
           'We’re here to help you succeed. Ace the OSCE is run by experienced doctors, dedicated to helping doctors feel confident and prepared for their OSCE exams. Whether you’re curious about our courses, schedules, or enrolment, we’d love to hear from you — get in touch today.',
       },
-      emailHeading: 'Prefer email?',
-      venueHeading: 'Find the Simulation Centre',
-      mapLinkLabel: 'Open in Google Maps',
     },
     {
       _id: 'privacyPage',
@@ -427,28 +424,27 @@ async function main() {
           heading: 'What we collect',
           body: richText([
             'When you use our contact form, we collect your name, email address, the OSCE sitting you are preparing for (if you choose to tell us) and your message.',
-            'We use Google Analytics to understand how visitors use our website, such as which pages are viewed and how people arrive at the site. This uses cookies and collects information like your approximate location, device and browser. It does not identify you by name.',
             'Course bookings and payments are handled by Humanitix, not by this website. Humanitix’s own privacy policy applies to the information you give them.',
           ]),
         },
         {
           heading: 'How we use it',
           body: richText([
-            'We use your contact details only to reply to your enquiry and, if you ask, to tell you about upcoming courses. We use analytics information to improve the website.',
+            'We use your contact details only to reply to your enquiry and, if you ask, to tell you about upcoming courses.',
             'We do not sell or rent your personal information, and we do not use it for unrelated marketing.',
           ]),
         },
         {
           heading: 'How it is stored',
           body: richText([
-            `Messages sent through our contact form are delivered by our email provider, Resend, to the ${site.name} email inbox. Analytics information is stored by Google. These providers may store information outside Australia.`,
+            `Messages sent through our contact form are delivered by our email provider, Resend, to the ${site.name} email inbox. Resend may store information outside Australia.`,
             'We keep enquiry emails only as long as we need them to respond and to run our courses.',
           ]),
         },
         {
           heading: 'Your choices',
           body: richText([
-            'You can ask us to see, correct or delete the personal information we hold about you by emailing us. You can block or delete cookies in your browser settings, or use Google’s opt-out browser add-on to stop Google Analytics.',
+            'You can ask us to see, correct or delete the personal information we hold about you by emailing us.',
           ]),
         },
         {
@@ -555,6 +551,9 @@ async function main() {
       unavailableError: richText([
         `Sorry, the form isn’t working right now. Please email us at ${site.email}.`,
       ]),
+      emailHeading: 'Prefer email?',
+      venueHeading: 'Find the Simulation Centre',
+      mapLinkLabel: 'Open in Google Maps',
     },
     {
       _id: 'siteSettings',

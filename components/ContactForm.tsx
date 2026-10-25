@@ -5,13 +5,26 @@ import { useActionState } from "react";
 import { type ContactState, sendContactMessage } from "@/app/contact/actions";
 import RichText from "@/components/RichText";
 import { CheckIcon } from "@/components/icons";
+import type { Content } from "@/lib/cms";
+
+// The form's wording, from Contact form in Sanity (rich-text messages are handled by the action).
+export type ContactFormText = Omit<
+	Content["contactForm"],
+	"heading" | "intro" | "sendError" | "unavailableError" | "emailHeading" | "venueHeading" | "mapLinkLabel"
+>;
 
 const initialState: ContactState = { status: "idle" };
 
 const inputClass =
 	"mt-2 w-full rounded-lg border border-border bg-white px-4 py-3 text-black placeholder:text-black/40 focus:border-primary";
 
-export default function ContactForm({ sittings }: { sittings: string[] }) {
+export default function ContactForm({
+	sittings,
+	text,
+}: {
+	sittings: string[];
+	text: ContactFormText;
+}) {
 	const [state, formAction, pending] = useActionState(
 		sendContactMessage,
 		initialState,
@@ -24,10 +37,10 @@ export default function ContactForm({ sittings }: { sittings: string[] }) {
 					<CheckIcon className="h-6 w-6" />
 				</span>
 				<h2 className="mt-5 text-2xl font-semibold text-midnight_text">
-					Thanks, we’ve got your message
+					{text.successHeading}
 				</h2>
 				<p className="mt-2 text-black/70">
-					We’ll reply to your email as soon as we can.
+					{text.successText}
 				</p>
 			</div>
 		);
@@ -40,7 +53,7 @@ export default function ContactForm({ sittings }: { sittings: string[] }) {
 		<form action={formAction} noValidate className="space-y-5">
 			<div>
 				<label htmlFor="name" className="font-medium text-midnight_text">
-					Name
+					{text.nameLabel}
 				</label>
 				<input
 					id="name"
@@ -60,7 +73,7 @@ export default function ContactForm({ sittings }: { sittings: string[] }) {
 			</div>
 			<div>
 				<label htmlFor="email" className="font-medium text-midnight_text">
-					Email
+					{text.emailLabel}
 				</label>
 				<input
 					id="email"
@@ -81,8 +94,8 @@ export default function ContactForm({ sittings }: { sittings: string[] }) {
 			</div>
 			<div>
 				<label htmlFor="sitting" className="font-medium text-midnight_text">
-					Which OSCE sitting are you preparing for?{" "}
-					<span className="font-normal text-black/60">(optional)</span>
+					{text.sittingLabel}{" "}
+					<span className="font-normal text-black/60">{text.optionalLabel}</span>
 				</label>
 				<select
 					id="sitting"
@@ -90,18 +103,18 @@ export default function ContactForm({ sittings }: { sittings: string[] }) {
 					defaultValue={values?.sitting ?? ""}
 					className={inputClass}
 				>
-					<option value="">Select a sitting</option>
+					<option value="">{text.sittingPlaceholder}</option>
 					{sittings.map((sitting) => (
 						<option key={sitting} value={sitting}>
 							{sitting}
 						</option>
 					))}
-					<option value="Not sure yet">Not sure yet</option>
+					<option value={text.notSureOption}>{text.notSureOption}</option>
 				</select>
 			</div>
 			<div>
 				<label htmlFor="message" className="font-medium text-midnight_text">
-					Message
+					{text.messageLabel}
 				</label>
 				<textarea
 					id="message"
@@ -135,12 +148,12 @@ export default function ContactForm({ sittings }: { sittings: string[] }) {
 					disabled={pending}
 					className="bg-primary border border-primary px-6 py-3 rounded-lg text-white hover:bg-primary-dark disabled:opacity-60"
 				>
-					{pending ? "Sending…" : "Send message"}
+					{pending ? text.sendingLabel : text.submitLabel}
 				</button>
 				<p className="text-sm text-black/60">
-					See our{" "}
+					{text.privacyText}{" "}
 					<Link href="/privacy" className="text-primary hover:underline">
-						privacy policy
+						{text.privacyLinkLabel}
 					</Link>
 					.
 				</p>

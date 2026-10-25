@@ -7,6 +7,16 @@ const nextConfig: NextConfig = {
 	trailingSlash: true,
 	// Build time, used to decide which course dates are still upcoming (see lib/schedule.ts).
 	env: { BUILD_TIMESTAMP: String(Date.now()) },
+	// Images edited in Sanity, served from its CDN. Query strings carry size and crop.
+	images: {
+		remotePatterns: [
+			{
+				protocol: "https",
+				hostname: "cdn.sanity.io",
+				pathname: "/images/f3et2lbb/production/**",
+			},
+		],
+	},
 	// Pages from the old WordPress site that Google has indexed.
 	async redirects() {
 		return [

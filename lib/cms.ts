@@ -171,9 +171,6 @@ export type Content = {
 	contactPage: {
 		seo?: Seo;
 		hero: PageHero;
-		emailHeading?: string;
-		venueHeading?: string;
-		mapLinkLabel?: string;
 	};
 	privacyPage: {
 		seo?: Seo;
@@ -229,6 +226,9 @@ export type Content = {
 		messageError: string;
 		sendError: RichText;
 		unavailableError: RichText;
+		emailHeading?: string;
+		venueHeading?: string;
+		mapLinkLabel?: string;
 	};
 	siteSettings: {
 		siteName: string;
@@ -264,4 +264,58 @@ export function formatCourseDate(iso: string) {
 		month: "long",
 		year: "numeric",
 	});
+}
+
+// A Sanity CDN URL for an image at a given size. `fit=crop` respects the editor's crop and
+// focus point when both width and height are given.
+export function imageUrl(
+	image: SanityImage,
+	{ width, height, format }: { width?: number; height?: number; format?: "png" | "jpg" } = {},
+) {
+	const params = new URLSearchParams();
+	if (width) params.set("w", String(width));
+	if (height) params.set("h", String(height));
+	if (width && height) params.set("fit", "crop");
+	if (image.crop) {
+		const { width: w, height: h } = image.asset;
+		const { top, bottom, left, right } = image.crop;
+		params.set(
+			"rect",
+			[left * w, top * h, (1 - left - right) * w, (1 - top - bottom) * h]
+				.map(Math.round)
+				.join(","),
+		);
+	}
+	if (image.hotspot) {
+		params.set("crop", "focalpoint");
+		params.set("fp-x", String(image.hotspot.x));
+		params.set("fp-y", String(image.hotspot.y));
+	}
+	params.set(format ? "fm" : "auto", format ?? "format");
+	return `${image.asset.url}?${params}`;
+}
+
+// Where a Sanity link points: a page on this site or another website.
+export function linkHref(link: Link) {
+	return { href: link.page ?? link.url ?? "/", external: !link.page };
+}
+
+// "Level 3 WECC, Westmead Hospital, …, Westmead NSW 2145, Australia"
+export function formatAddress(location: Content["siteSettings"]["location"]) {
+	return `${location.streetAddress}, ${location.locality} ${location.region} ${location.postcode}, Australia`;
+}
+
+// Rich text as plain text, with live values filled in. For places that can only show a
+// string, such as messages returned by the contact form's server action.
+export function toPlainText(value: RichText, { siteSettings, courseDates, inPersonCourse }: Content) {
+	const live: Record<LiveValue["_type"], string> = {
+		contactEmail: siteSettings.email,
+		nextCourseDate: formatCourseDate(courseDates.inPerson.startDate),
+		nextCourseVenue: inPersonCourse.venue,
+	};
+	return value
+		.map((block) =>
+			block.children.map((child) => (child._type === "span" ? child.text : live[child._type])).join(""),
+		)
+		.join("\n\n");
 }

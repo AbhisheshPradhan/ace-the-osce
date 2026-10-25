@@ -1,15 +1,18 @@
 import Image from "next/image";
 import Link from "next/link";
-import { site } from "@/lib/content";
+import { getContent } from "@/lib/cms";
 
-export default function Logo() {
+export default async function Logo() {
+	const { siteSettings } = await getContent();
+	const { logo, siteName } = siteSettings;
+
 	return (
-		<Link href="/" aria-label={`${site.name} home`}>
+		<Link href="/" aria-label={`${siteName} home`}>
 			<Image
-				src="/images/logo/logo.svg"
-				alt={site.name}
-				width={77}
-				height={48}
+				src={logo.asset.url}
+				alt={siteName}
+				width={logo.asset.width}
+				height={logo.asset.height}
 				priority
 				unoptimized
 				className="h-12 w-auto"

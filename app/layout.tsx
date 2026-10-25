@@ -4,6 +4,7 @@ import "./globals.css";
 import GlobalHeader from "@/components/GlobalHeader";
 import Analytics from "@/components/Analytics";
 import Footer from "@/components/Footer";
+import { getContent, imageUrl } from "@/lib/cms";
 import { isLiveSite, site } from "@/lib/content";
 
 const dmSans = DM_Sans({
@@ -13,36 +14,48 @@ const dmSans = DM_Sans({
 
 export const ensureStatic = "navigation";
 
-const description =
-	"A small-group, in-person ACEM Fellowship OSCE preparation course at the Westmead Simulation Centre, run by FACEM educators since 2016.";
+// Site name, default description, share image and icons come from Site settings in Sanity;
+// the default title is the Home page's. app/favicon.ico stays as the fallback icon.
+export async function generateMetadata(): Promise<Metadata> {
+	const { siteSettings, homePage } = await getContent();
+	const { siteName, defaultDescription, shareImage, siteIcon } = siteSettings;
 
-export const metadata: Metadata = {
-	metadataBase: new URL(site.url),
-	// Keep .vercel.app previews out of search results until launch.
-	...(!isLiveSite && { robots: { index: false, follow: false } }),
-	title: {
-		default: "Ace the OSCE | ACEM Fellowship OSCE Preparation Course, Sydney",
-		template: "%s | Ace the OSCE",
-	},
-	description,
-	...(process.env.GOOGLE_SITE_VERIFICATION && {
-		verification: { google: process.env.GOOGLE_SITE_VERIFICATION },
-	}),
-	openGraph: {
-		siteName: site.name,
-		locale: "en_AU",
-		type: "website",
-		description,
-		images: [
-			{
-				url: "/og.png",
-				width: 1200,
-				height: 630,
-				alt: "Ace the OSCE: ACEM Fellowship OSCE preparation course",
+	return {
+		metadataBase: new URL(site.url),
+		// Keep .vercel.app previews out of search results until launch.
+		...(!isLiveSite && { robots: { index: false, follow: false } }),
+		title: {
+			default: homePage.seo?.title ?? siteName,
+			template: `%s | ${siteName}`,
+		},
+		description: defaultDescription,
+		...(process.env.GOOGLE_SITE_VERIFICATION && {
+			verification: { google: process.env.GOOGLE_SITE_VERIFICATION },
+		}),
+		...(siteIcon && {
+			icons: {
+				icon: { url: imageUrl(siteIcon, { width: 64, height: 64, format: "png" }), type: "image/png" },
+				apple: { url: imageUrl(siteIcon, { width: 180, height: 180, format: "png" }), sizes: "180x180" },
 			},
-		],
-	},
-};
+		}),
+		openGraph: {
+			siteName,
+			locale: "en_AU",
+			type: "website",
+			description: defaultDescription,
+			...(shareImage && {
+				images: [
+					{
+						url: imageUrl(shareImage, { width: 1200, height: 630, format: "jpg" }),
+						width: 1200,
+						height: 630,
+						alt: shareImage.alt,
+					},
+				],
+			}),
+		},
+	};
+}
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
 	return (

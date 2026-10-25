@@ -1,13 +1,16 @@
 import Link from "next/link";
 import Logo from "@/components/Logo";
 import { MailIcon, MapPinIcon } from "@/components/icons";
-import { navLinks } from "@/components/navLinks";
-import { site } from "@/lib/content";
+import { formatAddress, getContent, linkHref } from "@/lib/cms";
+import { buildYear } from "@/lib/schedule";
 
 const linkClass =
 	"text-base text-black/70 hover:text-primary pb-1";
 
-export default function Footer() {
+export default async function Footer() {
+	const { footer, siteSettings } = await getContent();
+	const { email, location, siteName } = siteSettings;
+
 	return (
 		<footer className="border-t border-footer_stroke">
 			<div className="container mx-auto max-w-7xl px-6 lg:px-4">
@@ -15,39 +18,48 @@ export default function Footer() {
 					<div className="md:col-span-5 col-span-12">
 						<Logo />
 						<p className="text-base font-normal text-black/70 max-w-29 pt-6">
-							{site.tagline}
+							{footer.tagline}
 						</p>
 					</div>
 					<div className="md:col-span-3 sm:col-span-6 col-span-12">
 						<h2 className="pb-3 text-lg font-medium text-midnight_text">
-							Quick Links
+							{footer.linksHeading}
 						</h2>
 						<ul>
-							{[{ href: "/", label: "Home" }, ...navLinks].map((link) => (
-								<li key={link.href} className={linkClass}>
-									<Link href={link.href}>{link.label}</Link>
-								</li>
-							))}
+							{footer.links.map((link) => {
+								const { href, external } = linkHref(link);
+								return (
+									<li key={link.label} className={linkClass}>
+										{external ? (
+											<a href={href} target="_blank" rel="noopener noreferrer">
+												{link.label}
+											</a>
+										) : (
+											<Link href={href}>{link.label}</Link>
+										)}
+									</li>
+								);
+							})}
 						</ul>
 					</div>
 					<div className="md:col-span-4 sm:col-span-6 col-span-12">
 						<h2 className="pb-3 text-lg font-medium text-midnight_text">
-							Get in Touch
+							{footer.contactHeading}
 						</h2>
 						<ul className="space-y-3">
 							<li className="flex items-start gap-3">
 								<MailIcon className="mt-0.5 h-5 w-5 shrink-0 text-primary" />
 								<a
-									href={`mailto:${site.email}`}
+									href={`mailto:${email}`}
 									className="text-black/70 hover:text-primary break-all"
 								>
-									{site.email}
+									{email}
 								</a>
 							</li>
 							<li className="flex items-start gap-3 text-black/70">
 								<MapPinIcon className="mt-0.5 h-5 w-5 shrink-0 text-primary" />
 								<span>
-									{site.location.name}, {site.location.address}
+									{location.name}, {formatAddress(location)}
 								</span>
 							</li>
 						</ul>
@@ -55,10 +67,10 @@ export default function Footer() {
 				</div>
 				<div className="flex flex-wrap items-center justify-between gap-4 py-8 text-sm text-black/70">
 					<p>
-						Copyright © {site.copyrightYear} {site.name}
+						Copyright © {buildYear} {siteName}
 					</p>
 					<Link href="/privacy" className="hover:text-primary">
-						Privacy Policy
+						{footer.privacyLinkLabel}
 					</Link>
 				</div>
 			</div>

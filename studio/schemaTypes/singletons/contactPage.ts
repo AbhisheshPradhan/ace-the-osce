@@ -15,7 +15,7 @@ export const contactPage = defineType({
     {
       ...editElsewhere(
         'sharedNote',
-        'Also on this page, edited separately: the form, and the email address, venue address and map.',
+        'Also on this page, edited separately: the form with its email, venue and map boxes (Contact form), and the email address and venue details (Site settings).',
         [
           {id: 'contactForm', type: 'contactForm', title: 'Contact form'},
           {id: 'siteSettings', type: 'siteSettings', title: 'Site settings'},
@@ -24,25 +24,6 @@ export const contactPage = defineType({
       group: 'content',
     },
     defineField({name: 'hero', title: 'Page heading', type: 'pageHero', group: 'content'}),
-    defineField({
-      name: 'emailHeading',
-      title: 'Email box heading',
-      type: 'string',
-      group: 'content',
-    }),
-    defineField({
-      name: 'venueHeading',
-      title: 'Venue box heading',
-      type: 'string',
-      group: 'content',
-    }),
-    defineField({
-      name: 'mapLinkLabel',
-      title: 'Map link',
-      type: 'string',
-      group: 'content',
-      description: 'Opens the venue in Google Maps.',
-    }),
     defineField({name: 'seo', title: 'Search and sharing', type: 'seo', group: 'seo'}),
   ],
   preview: {prepare: () => ({title: 'Contact'})},

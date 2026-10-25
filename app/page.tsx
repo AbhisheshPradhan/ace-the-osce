@@ -1,6 +1,7 @@
 import CallToAction from "@/components/CallToAction";
 import JsonLd from "@/components/JsonLd";
 import AboutCourse from "@/components/home/AboutCourse";
+import ContactSection from "@/components/home/ContactSection";
 import CourseOptions from "@/components/home/CourseOptions";
 import FacultyPreview from "@/components/home/FacultyPreview";
 import Hero from "@/components/home/Hero";
@@ -16,6 +17,7 @@ export default function Home() {
 			<CourseOptions showDetailsLink />
 			<FacultyPreview />
 			<Testimonials />
+			<ContactSection />
 			<CallToAction />
 		</>
 	);

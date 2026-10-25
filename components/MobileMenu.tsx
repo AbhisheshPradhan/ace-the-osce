@@ -3,15 +3,12 @@
 import Link from "next/link";
 import { useEffect, useState, useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
-import { navLinks } from "@/components/navLinks";
+
+type MenuLink = { href: string; label: string; external: boolean };
 
 const noopSubscribe = () => () => {};
 
-export default function MobileMenu({
-	cta,
-}: {
-	cta: { href: string; label: string; external: boolean };
-}) {
+export default function MobileMenu({ links, cta }: { links: MenuLink[]; cta: MenuLink }) {
 	const [open, setOpen] = useState(false);
 	// The drawer is portalled to <body>: the header's backdrop-blur would otherwise
 	// become the containing block for its fixed positioning.
@@ -93,16 +90,29 @@ export default function MobileMenu({
 								</button>
 							</div>
 							<nav className="flex flex-col items-start p-4">
-								{navLinks.map((link) => (
-									<Link
-										key={link.label}
-										className="w-full py-2 px-3 rounded-md text-black hover:text-primary"
-										href={link.href}
-										onClick={close}
-									>
-										{link.label}
-									</Link>
-								))}
+								{links.map((link) =>
+									link.external ? (
+										<a
+											key={link.label}
+											className="w-full py-2 px-3 rounded-md text-black hover:text-primary"
+											href={link.href}
+											target="_blank"
+											rel="noopener noreferrer"
+											onClick={close}
+										>
+											{link.label}
+										</a>
+									) : (
+										<Link
+											key={link.label}
+											className="w-full py-2 px-3 rounded-md text-black hover:text-primary"
+											href={link.href}
+											onClick={close}
+										>
+											{link.label}
+										</Link>
+									),
+								)}
 								<a
 									className="mt-4 w-full text-center bg-primary border border-primary px-4 py-2 rounded-lg text-white hover:bg-primary-dark"
 									href={cta.href}
