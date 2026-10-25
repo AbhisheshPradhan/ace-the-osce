@@ -108,9 +108,11 @@ Sanity needs none: the dataset is public and the project id is in the fetch scri
 - Sanity integration is done: every page reads from Sanity at build time. The one-off seed script
   that imported the old content was removed (it's in git history); **don't recreate one** — the
   team edits in the Studio now and a seed would overwrite their changes.
-- Still to do: Vercel deploy hook + Sanity webhook (publish → deploy), `npx sanity deploy` for the
-  hosted Studio, invite the doctors as Editors, a one-page editing guide for them, Draft Mode
-  preview (iteration 2), optional daily scheduled rebuild so passed courses flip without a publish.
+- Publishing in Sanity deploys the site: a Sanity webhook (production, published only) calls a
+  Vercel deploy hook. The hosted Studio is https://ace-the-osce.sanity.studio (`npx sanity deploy`
+  in studio/). Draft Mode preview was skipped: the team edits about twice a year.
+- Still to do: invite the doctors as Editors, a one-page editing guide for them; optional daily
+  scheduled rebuild so passed courses flip without a publish.
 - The 24 July 2026 course has passed, so the site shows "Next course dates coming soon".
   Awaiting next dates + Humanitix link from the team.
 - Waiting on the team for: next dates, price, group size, course length (the in-person card

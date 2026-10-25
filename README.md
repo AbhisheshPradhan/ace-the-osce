@@ -29,9 +29,9 @@ npm run build
 
 ## Updating content
 
-All text, dates, links and images are edited in the **Sanity Studio**, not in the code.
-Click **Publish** and the site rebuilds with the change (once the publish webhook is set up;
-until then, redeploy in Vercel or push to `main`).
+All text, dates, links and images are edited in the **Sanity Studio** at
+https://ace-the-osce.sanity.studio, not in the code. Click **Publish** and a Sanity webhook
+triggers a Vercel deploy: the change is live in about two minutes.
 
 The Studio sidebar:
 
