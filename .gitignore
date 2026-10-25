@@ -36,6 +36,9 @@ yarn-error.log*
 # vercel
 .vercel
 
+# content fetched from Sanity at build time (scripts/fetch-content.mjs)
+/content/site-content.json
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
