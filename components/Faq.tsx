@@ -1,7 +1,8 @@
 import Reveal from "@/components/Reveal";
-import RichText from "@/components/RichText";
+import PortableText from "@/components/PortableText";
 import Section from "@/components/Section";
 import SectionHeading from "@/components/SectionHeading";
+import type { FaqItem } from "@/lib/cms";
 
 export default function Faq({
 	items,
@@ -10,7 +11,7 @@ export default function Faq({
 	title = "Frequently asked questions",
 	children,
 }: {
-	items: { question: string; answer: string }[];
+	items: FaqItem[];
 	eyebrow?: string;
 	tint?: boolean;
 	title?: string;
@@ -38,9 +39,9 @@ export default function Faq({
 									+
 								</span>
 							</summary>
-							<p className="px-6 pb-5 text-black/70">
-								<RichText text={item.answer} />
-							</p>
+							<div className="space-y-3 px-6 pb-5 text-black/70">
+								<PortableText value={item.answer} />
+							</div>
 						</details>
 					))}
 				</div>

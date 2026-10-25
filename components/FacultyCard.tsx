@@ -1,12 +1,13 @@
 import FacultyAvatar from "@/components/FacultyAvatar";
-import { type FacultyMember, facultySlug } from "@/lib/content";
+import type { Faculty } from "@/lib/cms";
+import { facultySlug } from "@/lib/content";
 
 export default function FacultyCard({
 	member,
 	sizes,
 	showBio = false,
 }: {
-	member: FacultyMember;
+	member: Faculty;
 	sizes: string;
 	showBio?: boolean;
 }) {

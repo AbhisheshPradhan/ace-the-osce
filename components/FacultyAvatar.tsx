@@ -1,5 +1,5 @@
 import Image from "next/image";
-import type { FacultyMember } from "@/lib/content";
+import { type Faculty, imageUrl } from "@/lib/cms";
 
 function initials(name: string) {
 	return name
@@ -14,15 +14,15 @@ export default function FacultyAvatar({
 	member,
 	sizes,
 }: {
-	member: FacultyMember;
+	member: Faculty;
 	sizes: string;
 }) {
 	return (
 		<div className="relative aspect-square overflow-hidden bg-tint">
-			{member.image ? (
+			{member.photo ? (
 				<Image
-					src={member.image}
-					alt={member.name}
+					src={imageUrl(member.photo, { width: 800 })}
+					alt={member.photo.alt}
 					fill
 					sizes={sizes}
 					className="object-cover object-top"

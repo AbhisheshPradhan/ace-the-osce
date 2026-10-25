@@ -2,17 +2,20 @@ import Reveal from "@/components/Reveal";
 import Section from "@/components/Section";
 import SectionHeading from "@/components/SectionHeading";
 import { CheckIcon } from "@/components/icons";
-import { courseDay, curriculum } from "@/lib/content";
+import { getContent } from "@/lib/cms";
 
-export default function CourseDay() {
+export default async function CourseDay() {
+	const { coursePage } = await getContent();
+	const { heading, steps, topicsHeading, topics } = coursePage.howItWorks;
+
 	return (
 		<Section>
 			<div className="container mx-auto max-w-7xl px-6 lg:px-4">
 				<Reveal>
 					<SectionHeading
-						eyebrow="How it works"
-						title="Your course, from start to finish"
-						description="Support before, during and after the in-person day."
+						eyebrow={heading.eyebrow}
+						title={heading.title}
+						description={heading.description}
 					/>
 				</Reveal>
 				<ol className="relative mt-14 grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -21,7 +24,7 @@ export default function CourseDay() {
 						aria-hidden="true"
 						className="absolute top-5 left-5 right-[calc((100%-6rem)/4-1.25rem)] hidden h-0.5 bg-primary/20 lg:block"
 					/>
-					{courseDay.map((item, i) => (
+					{steps.map((item, i) => (
 						<li key={item.step} className="relative">
 							<Reveal delay={i * 100} className="h-full">
 								<div className="flex items-center gap-3">
@@ -42,10 +45,10 @@ export default function CourseDay() {
 				</ol>
 				<Reveal className="mt-16 rounded-3xl bg-tint p-8 sm:p-10">
 					<h3 className="text-xl font-semibold text-midnight_text">
-						What we cover
+						{topicsHeading}
 					</h3>
 					<ul className="mt-5 flex flex-wrap gap-3">
-						{curriculum.map((topic) => (
+						{topics?.map((topic) => (
 							<li
 								key={topic}
 								className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 font-medium text-midnight_text"

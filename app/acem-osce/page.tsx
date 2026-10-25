@@ -3,71 +3,74 @@ import Link from "next/link";
 import Faq from "@/components/Faq";
 import JsonLd from "@/components/JsonLd";
 import PageHero from "@/components/PageHero";
+import PortableText from "@/components/PortableText";
 import Reveal from "@/components/Reveal";
 import Section from "@/components/Section";
 import SectionHeading from "@/components/SectionHeading";
 import { ArrowRightIcon, CheckIcon } from "@/components/icons";
-import PortableText from "@/components/PortableText";
-import { getContent } from "@/lib/cms";
+import { getContent, imageUrl } from "@/lib/cms";
 import { site } from "@/lib/content";
 import { getSchedule } from "@/lib/schedule";
-import {
-	eligibility,
-	examFee,
-	guideFaqs,
-	keyFacts,
-	osceSource,
-	sittings,
-	stationTypes,
-} from "@/lib/osce-facts";
 
-const title = "ACEM Fellowship OSCE: Format, Stations, Eligibility and Dates";
-const description =
-	"A plain-English guide to the ACEM Fellowship Clinical Examination (OSCE): 12 stations of 11 minutes over two days, station types, eligibility, attempts, fees and 2026–27 sitting dates.";
-
-export const metadata: Metadata = {
-	title,
-	description,
-	alternates: { canonical: "/acem-osce/" },
-	openGraph: { title, description, type: "article", images: "/og.png" },
-};
-
-const structuredData = {
-	"@context": "https://schema.org",
-	"@type": "Article",
-	headline: title,
-	description,
-	dateModified: osceSource.lastCheckedIso,
-	author: { "@type": "Organization", name: site.name, url: site.url },
-	publisher: { "@type": "Organization", name: site.name, url: site.url },
-	mainEntityOfPage: `${site.url}/acem-osce/`,
-	citation: osceSource.url,
-};
+export async function generateMetadata(): Promise<Metadata> {
+	const { osceGuidePage, siteSettings } = await getContent();
+	const { title, description } = osceGuidePage.seo ?? {};
+	const { shareImage } = siteSettings;
+	return {
+		title,
+		description,
+		alternates: { canonical: "/acem-osce/" },
+		openGraph: {
+			title,
+			description,
+			type: "article",
+			...(shareImage && {
+				images: [
+					{
+						url: imageUrl(shareImage, { width: 1200, height: 630, format: "jpg" }),
+						width: 1200,
+						height: 630,
+						alt: shareImage.alt,
+					},
+				],
+			}),
+		},
+	};
+}
 
 export default async function AcemOsceGuide() {
-	const { courseDates, osceGuidePage } = await getContent();
-	const { banner } = osceGuidePage;
+	const { courseDates, osceGuidePage, siteSettings } = await getContent();
+	const { hero, keyFacts, format, eligibility, sittings, faq, source, banner, seo } =
+		osceGuidePage;
 	const { inPersonUpcoming } = await getSchedule();
+	const structuredData = {
+		"@context": "https://schema.org",
+		"@type": "Article",
+		headline: seo?.title,
+		description: seo?.description,
+		dateModified: source.lastChecked,
+		author: { "@type": "Organization", name: siteSettings.siteName, url: site.url },
+		publisher: { "@type": "Organization", name: siteSettings.siteName, url: site.url },
+		mainEntityOfPage: `${site.url}/acem-osce/`,
+		citation: source.url,
+	};
 
 	return (
 		<>
 			<JsonLd data={structuredData} />
-			<PageHero
-				title="The ACEM Fellowship OSCE"
-				description="Everything you need to know about the Fellowship Clinical Examination: the format, station types, who can sit it and when."
-			/>
+			<PageHero title={hero.title} description={hero.description} />
 
 			<Section>
 				<div className="container mx-auto max-w-5xl px-6 lg:px-4">
 					<Reveal>
 						<SectionHeading
-							eyebrow="At a glance"
-							title="Key facts"
-							description={`The OSCE is a clinical exam based on scenarios you would expect to see in the emergency department. The current exam fee is ${examFee} per attempt.`}
+							eyebrow={keyFacts.heading.eyebrow}
+							title={keyFacts.heading.title}
+							description={keyFacts.heading.description}
 						/>
 					</Reveal>
 					<div className="mt-12 grid grid-cols-2 lg:grid-cols-4 gap-6">
-						{keyFacts.map((fact, i) => (
+						{keyFacts.facts.map((fact, i) => (
 							<Reveal
 								key={fact.label}
 								delay={i * 100}
@@ -86,28 +89,22 @@ export default async function AcemOsceGuide() {
 			<Section tint>
 				<div className="container mx-auto max-w-5xl px-6 lg:px-4 grid lg:grid-cols-2 gap-12">
 					<Reveal>
-						<SectionHeading align="left" eyebrow="Format" title="How the exam runs" />
+						<SectionHeading
+							align="left"
+							eyebrow={format.heading.eyebrow}
+							title={format.heading.title}
+						/>
 						<div className="mt-6 space-y-4 text-lg text-black/70">
-							<p>
-								The OSCE is held over two consecutive days and has up to 12
-								clinical stations.
-							</p>
-							<p>
-								Each station is 11 minutes: 4 minutes of reading time followed by
-								7 minutes of assessment. That adds up to 132 minutes of stations
-								across the two days.
-							</p>
+							<PortableText value={format.body} />
 						</div>
 					</Reveal>
 					<Reveal delay={150}>
 						<h3 className="text-xl font-semibold text-midnight_text">
-							Station types
+							{format.stationTypesHeading}
 						</h3>
-						<p className="mt-2 text-black/70">
-							Every sitting includes at least one of each:
-						</p>
+						<p className="mt-2 text-black/70">{format.stationTypesIntro}</p>
 						<ul className="mt-5 space-y-3">
-							{stationTypes.map((station) => (
+							{format.stationTypes.map((station) => (
 								<li
 									key={station}
 									className="flex items-start gap-3 rounded-xl bg-white px-4 py-3 font-medium text-midnight_text"
@@ -126,17 +123,18 @@ export default async function AcemOsceGuide() {
 					<Reveal>
 						<SectionHeading
 							align="left"
-							eyebrow="Eligibility"
-							title="Who can sit the OSCE?"
+							eyebrow={eligibility.heading.eyebrow}
+							title={eligibility.heading.title}
 						/>
-						<p className="mt-6 text-lg text-black/70">
-							You must meet these requirements by the eligibility deadline for
-							your chosen sitting:
-						</p>
+						{eligibility.heading.description && (
+							<p className="mt-6 text-lg text-black/70">
+								{eligibility.heading.description}
+							</p>
+						)}
 					</Reveal>
 					<Reveal delay={150}>
 						<ul className="space-y-4">
-							{eligibility.map((item) => (
+							{eligibility.requirements.map((item) => (
 								<li key={item} className="flex items-start gap-3 text-black/80">
 									<span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-primary text-white">
 										<CheckIcon className="h-4 w-4" />
@@ -145,10 +143,9 @@ export default async function AcemOsceGuide() {
 								</li>
 							))}
 						</ul>
-						<p className="mt-6 text-sm text-black/60">
-							Specialist international medical graduates and transitioned
-							trainees have variations under ACEM’s regulations.
-						</p>
+						{eligibility.note && (
+							<p className="mt-6 text-sm text-black/60">{eligibility.note}</p>
+						)}
 					</Reveal>
 				</div>
 			</Section>
@@ -157,13 +154,13 @@ export default async function AcemOsceGuide() {
 				<div className="container mx-auto max-w-5xl px-6 lg:px-4">
 					<Reveal>
 						<SectionHeading
-							eyebrow="Dates"
-							title="Upcoming OSCE sittings"
-							description="The application close date is also the withdrawal cut-off, unless exceptional circumstances apply."
+							eyebrow={sittings.heading.eyebrow}
+							title={sittings.heading.title}
+							description={sittings.heading.description}
 						/>
 					</Reveal>
 					<div className="mt-12 grid md:grid-cols-3 gap-6">
-						{sittings.map((s, i) => (
+						{sittings.items.map((s, i) => (
 							<Reveal
 								key={s.sitting}
 								delay={i * 100}
@@ -202,31 +199,12 @@ export default async function AcemOsceGuide() {
 				</div>
 			</Section>
 
-			<Faq items={guideFaqs} eyebrow="OSCE FAQ" title="Common questions about the OSCE">
-				<p className="mt-10 text-sm text-black/60">
-					Source:{" "}
-					<a
-						href={osceSource.url}
-						target="_blank"
-						rel="noopener noreferrer"
-						className="text-primary hover:underline"
-					>
-						ACEM Examinations
-					</a>
-					, last checked {osceSource.lastChecked}. Exam details can change, so
-					always confirm with ACEM before applying. Past papers and exam reports
-					are on{" "}
-					<a
-						href={osceSource.resourcesUrl}
-						target="_blank"
-						rel="noopener noreferrer"
-						className="text-primary hover:underline"
-					>
-						ACEM eLearning
-					</a>
-					.
-				</p>
+			<Faq items={faq.items} eyebrow={faq.heading.eyebrow} title={faq.heading.title}>
+				<div className="mt-10 text-sm text-black/60">
+					<PortableText value={source.note} />
+				</div>
 			</Faq>
+
 
 			<Section spacing="bottom">
 				<div className="container mx-auto max-w-7xl px-6 lg:px-4">
