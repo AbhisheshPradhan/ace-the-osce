@@ -115,8 +115,10 @@ Sanity needs none: the dataset is public and the project id is in the fetch scri
   scheduled rebuild so passed courses flip without a publish.
 - The 24 July 2026 course has passed, so the site shows "Next course dates coming soon".
   Awaiting next dates + Humanitix link from the team.
-- Waiting on the team for: next dates, price, group size, course length (the in-person card
-  says "a full day"; the old "two intensive days" was removed from About Us), day schedule,
+- Waiting on the team for: next dates, price, group size, packages and pricing (Humanitix 2026:2 listed a free online evening
+  session and a paid in-person day; the old About Us "two intensive days" meant the two together
+  and was removed; consider saying in-person includes the online session), who leads the
+  Evening Taster (Humanitix says "Laura, one of our recent prize-winning candidates"), day schedule,
   recent course photos (the in-person course card image is AI-generated; the hero uses 2017
   photos), matching headshots (Dr Susie Stapledon has none), recent testimonials (the newest is
   a 2023 email), faculty FACEM status and any exam prizes, Humanitix API key, DNS access, GA4
