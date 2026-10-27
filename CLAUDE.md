@@ -130,8 +130,10 @@ Sanity needs none: the dataset is public and the project id is in the fetch scri
   Past sittings stay listed on purpose until the team removes them.
 - Still to do: invite the doctors as Editors; hand over accounts (admin invites for
   `acetheosce@gmail.com` on GA, Search Console, Sanity and Resend; transfer the Vercel project
-  to a Pro team, as Hobby is for non-commercial use); in GA, mark `generate_lead` and
-  `enrol_click` as Key events. No daily scheduled rebuild for now.
+  to a Pro team, as Hobby is for non-commercial use); in GA, star `generate_lead` and
+  `enrol_click` as key events (Admin → Data display → Events → Recent events) once each has fired
+  for real. This GA version can't add a key event by name in advance, and "Create event" would
+  duplicate it. GA4 is live (`G-KLYWSTMVJG`). No daily scheduled rebuild for now.
 - The 24 July 2026 course has passed, so the site shows "Next course dates coming soon".
   Awaiting next dates + Humanitix link from the team.
 - Waiting on the team for: next dates, price, group size, packages and pricing (Humanitix 2026:2 listed a free online evening
