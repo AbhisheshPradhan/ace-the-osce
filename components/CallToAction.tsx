@@ -28,6 +28,7 @@ export default async function CallToAction() {
 					<div className="mt-8 flex flex-wrap justify-center gap-4">
 						{inPersonUpcoming && (
 							<a
+								data-cta="cta_banner_enrol"
 								href={courseDates.bookingUrl}
 								target="_blank"
 								rel="noopener noreferrer"
@@ -37,7 +38,7 @@ export default async function CallToAction() {
 								<ArrowRightIcon className="h-5 w-5" />
 							</a>
 						)}
-						<Link href="/contact" className={inPersonUpcoming ? outlineButton : solidButton}>
+						<Link data-cta="cta_banner_contact" href="/contact" className={inPersonUpcoming ? outlineButton : solidButton}>
 							{callToAction.contactLabel}
 						</Link>
 					</div>

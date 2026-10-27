@@ -50,6 +50,7 @@ export default async function Footer() {
 							<li className="flex items-start gap-3">
 								<MailIcon className="mt-0.5 h-5 w-5 shrink-0 text-primary" />
 								<a
+									data-cta="footer_email"
 									href={`mailto:${email}`}
 									className="text-black/70 hover:text-primary break-all"
 								>

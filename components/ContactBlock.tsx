@@ -22,6 +22,7 @@ export default async function ContactBlock() {
 							{contactForm.emailHeading}
 						</h2>
 						<a
+							data-cta="contact_box_email"
 							href={`mailto:${email}`}
 							className="mt-3 inline-block text-lg font-medium text-primary hover:underline break-all"
 						>

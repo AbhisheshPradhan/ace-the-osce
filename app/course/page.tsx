@@ -40,6 +40,7 @@ export default async function CoursePage() {
 					<p className="mt-10 text-center text-black/70">
 						{faq.guideLinkIntro}{" "}
 						<Link
+							data-cta="course_faq_osce_guide"
 							href="/acem-osce"
 							className="inline-flex items-center gap-1 font-medium text-primary hover:underline"
 						>

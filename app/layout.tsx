@@ -74,7 +74,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
 					{children}
 				</main>
 				<Footer />
-				{process.env.NEXT_PUBLIC_GA_ID && (
+				{isLiveSite && process.env.NEXT_PUBLIC_GA_ID && (
 					<Analytics gaId={process.env.NEXT_PUBLIC_GA_ID} />
 				)}
 			</body>

@@ -45,8 +45,12 @@ for, and converts visitors to enrolments (currently via Humanitix).
 - `.vercel.app` deployments are `noindex` + robots-disallowed; only `https://acetheosce.com.au`
   is indexable (`isLiveSite` in `lib/site.ts`, from `SITE_URL`, set in Vercel Production, falling
   back to `VERCEL_PROJECT_PRODUCTION_URL`).
-- Google Analytics isn't set up and the privacy policy doesn't mention it. If `NEXT_PUBLIC_GA_ID`
-  is ever set, add analytics and cookie wording back to the Privacy Policy in Sanity.
+- Google Analytics 4 loads only on the live site (`isLiveSite` + `NEXT_PUBLIC_GA_ID`), with no
+  cookie banner (AU/NZ audience; disclosed in the Privacy Policy's "Analytics and cookies"
+  section in Sanity). Events from one click listener in `components/Analytics.tsx`: `enrol_click`
+  (Humanitix links), `email_click` (mailto), `cta_click` (links with a fixed `data-cta` id, since
+  button text comes from Sanity), plus `generate_lead` when the contact form actually sends. Give
+  new buttons a `data-cta` id. Keep GA's enhanced "form interactions" off (it double-counts).
 
 ## Where things live
 
@@ -126,8 +130,8 @@ Sanity needs none: the dataset is public and the project id is in the fetch scri
   Past sittings stay listed on purpose until the team removes them.
 - Still to do: invite the doctors as Editors; hand over accounts (admin invites for
   `acetheosce@gmail.com` on GA, Search Console, Sanity and Resend; transfer the Vercel project
-  to a Pro team, as Hobby is for non-commercial use); GA4 — add analytics/cookie wording to the
-  Privacy Policy in Sanity first, then set `NEXT_PUBLIC_GA_ID`. No daily scheduled rebuild for now.
+  to a Pro team, as Hobby is for non-commercial use); in GA, mark `generate_lead` and
+  `enrol_click` as Key events. No daily scheduled rebuild for now.
 - The 24 July 2026 course has passed, so the site shows "Next course dates coming soon".
   Awaiting next dates + Humanitix link from the team.
 - Waiting on the team for: next dates, price, group size, packages and pricing (Humanitix 2026:2 listed a free online evening
@@ -136,5 +140,5 @@ Sanity needs none: the dataset is public and the project id is in the fetch scri
   Evening Taster (Humanitix says "Laura, one of our recent prize-winning candidates"), day schedule,
   recent course photos (the in-person course card image is AI-generated; the hero uses 2017
   photos), matching headshots (Dr Susie Stapledon has none), recent testimonials (the newest is
-  a 2023 email), faculty FACEM status and any exam prizes, Humanitix API key, GA4 ID, privacy
-  policy review, and a source for the home page "50+ courses / 500+ attendees" stats.
+  a 2023 email), faculty FACEM status and any exam prizes, Humanitix API key, privacy policy
+  review, and a source for the home page "50+ courses / 500+ attendees" stats.

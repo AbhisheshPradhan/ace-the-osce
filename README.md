@@ -72,7 +72,7 @@ Set these in Vercel (Project → Settings → Environment Variables). See `.env.
 | --- | --- |
 | `RESEND_API_KEY` | Sends contact form messages (required for the form to work) |
 | `CONTACT_FROM_EMAIL` | Sender address on a domain verified in Resend (defaults to `Ace the OSCE website <noreply@acetheosce.com.au>`) |
-| `NEXT_PUBLIC_GA_ID` | Google Analytics 4 measurement ID (optional; update the privacy policy if you set it) |
+| `NEXT_PUBLIC_GA_ID` | Google Analytics 4 measurement ID. Loads only on the live site; the Privacy Policy describes it |
 | `SITE_URL` | `https://acetheosce.com.au` in Production. Makes the site indexable and sets canonical URLs |
 
 Sanity needs no variables: the dataset is public.

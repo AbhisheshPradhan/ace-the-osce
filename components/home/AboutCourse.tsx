@@ -36,6 +36,7 @@ export default async function AboutCourse() {
 					)}
 					{linkLabel && (
 						<Link
+							data-cta="about_course_more"
 							href="/about-us"
 							className="mt-8 inline-flex items-center gap-2 text-primary font-medium hover:gap-3 transition-all"
 						>

@@ -114,6 +114,7 @@ export default function MobileMenu({ links, cta }: { links: MenuLink[]; cta: Men
 									),
 								)}
 								<a
+									data-cta="mobile_menu"
 									className="mt-4 w-full text-center bg-primary border border-primary px-4 py-2 rounded-lg text-white hover:bg-primary-dark"
 									href={cta.href}
 									{...(cta.external && {

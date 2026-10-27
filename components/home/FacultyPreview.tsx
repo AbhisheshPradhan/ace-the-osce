@@ -32,6 +32,7 @@ export default async function FacultyPreview() {
 				</div>
 				<Reveal className="mt-12 text-center">
 					<Link
+						data-cta="faculty_preview_more"
 						href="/about-us"
 						className="inline-flex items-center gap-2 px-6 py-3 rounded-lg border border-primary text-primary hover:bg-primary hover:text-white"
 					>

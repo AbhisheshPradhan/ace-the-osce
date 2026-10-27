@@ -216,6 +216,7 @@ export default async function AcemOsceGuide() {
 						<div className="mt-8 flex flex-wrap justify-center gap-4">
 							{inPersonUpcoming && (
 								<a
+									data-cta="osce_guide_banner_enrol"
 									href={courseDates.bookingUrl}
 									target="_blank"
 									rel="noopener noreferrer"
@@ -226,6 +227,7 @@ export default async function AcemOsceGuide() {
 								</a>
 							)}
 							<Link
+								data-cta="osce_guide_banner_course"
 								href="/course"
 								className={
 									inPersonUpcoming

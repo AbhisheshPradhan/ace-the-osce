@@ -125,6 +125,7 @@ export default async function Hero() {
 					<div className="mt-10 flex flex-wrap gap-4">
 						{inPersonUpcoming ? (
 							<a
+								data-cta="hero_primary"
 								href={courseDates.bookingUrl}
 								target="_blank"
 								rel="noopener noreferrer"
@@ -135,6 +136,7 @@ export default async function Hero() {
 							</a>
 						) : (
 							<Link
+								data-cta="hero_primary"
 								href="/contact"
 								className="inline-flex items-center gap-2 bg-primary border border-primary px-6 py-3 rounded-lg text-white text-lg hover:bg-primary-dark"
 							>
@@ -143,6 +145,7 @@ export default async function Hero() {
 							</Link>
 						)}
 						<Link
+							data-cta="hero_course_details"
 							href="/course"
 							className="inline-flex items-center px-6 py-3 rounded-lg border border-primary text-primary text-lg hover:bg-primary hover:text-white"
 						>

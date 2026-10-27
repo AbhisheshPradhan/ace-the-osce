@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useActionState } from "react";
 import { type ContactState, sendContactMessage } from "@/app/contact/actions";
+import { trackEvent } from "@/components/Analytics";
 import { CheckIcon } from "@/components/icons";
 import type { Content } from "@/lib/cms";
 
@@ -27,7 +28,14 @@ export default function ContactForm({
 	email: string;
 }) {
 	const [state, formAction, pending] = useActionState(
-		sendContactMessage,
+		async (prev: ContactState, formData: FormData) => {
+			const result = await sendContactMessage(prev, formData);
+			// A message actually sent counts as a lead in GA (not just a click on Send).
+			if (result.status === "success") {
+				trackEvent("generate_lead", { sitting: String(formData.get("sitting") || "none") });
+			}
+			return result;
+		},
 		initialState,
 	);
 

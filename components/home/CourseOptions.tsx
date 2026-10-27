@@ -91,6 +91,7 @@ export default async function CourseOptions({
 									<div className="mt-auto pt-8">
 										{isUpcoming ? (
 											<a
+												data-cta={`course_card_${id}`}
 												href={courseDates.bookingUrl}
 												target="_blank"
 												rel="noopener noreferrer"
@@ -101,6 +102,7 @@ export default async function CourseOptions({
 											</a>
 										) : (
 											<Link
+												data-cta={`course_card_${id}`}
 												href="/contact"
 												className="inline-flex items-center gap-2 bg-primary border border-primary px-6 py-3 rounded-lg text-white hover:bg-primary-dark"
 											>
@@ -117,6 +119,7 @@ export default async function CourseOptions({
 				{showDetailsLink && (
 					<Reveal className="mt-12 text-center">
 						<Link
+							data-cta="course_options_details"
 							href="/course"
 							className="inline-flex items-center gap-2 px-6 py-3 rounded-lg border border-primary text-primary hover:bg-primary hover:text-white"
 						>
