@@ -16,7 +16,7 @@ export function editElsewhere(name: string, text: string, targets: Target[] = []
           {targets.length > 0 && (
             <Flex gap={4} wrap="wrap">
               {targets.map((target) => (
-                <Text key={target.id} size={1} weight="semibold">
+                <Text key={`${target.id}:${target.path ?? ''}`} size={1} weight="semibold">
                   <IntentLink
                     intent="edit"
                     params={{

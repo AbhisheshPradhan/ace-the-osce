@@ -21,6 +21,7 @@ export const contactForm = defineType({
         'sharedNote',
         "Shown on the Contact page and the Home page, with the email and venue boxes and a map beside and below it. The sitting options come from the OSCE Guide's sittings; the email address and venue details are in Site settings.",
         [
+          {id: 'osceGuidePage', type: 'osceGuidePage', title: 'OSCE Guide'},
           {
             id: 'osceGuidePage',
             type: 'osceGuidePage',
