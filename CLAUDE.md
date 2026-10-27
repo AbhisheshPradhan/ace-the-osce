@@ -13,7 +13,9 @@ for, and converts visitors to enrolments (currently via Humanitix).
 
 ## Stack
 
-- Next.js 16 (App Router, TypeScript) with `cacheComponents` and `partialPrefetching` on.
+- Next.js 16 (App Router, TypeScript) with `cacheComponents`, `partialPrefetching` and
+  `experimental.inlineCss` on (the ~8 KiB stylesheet is inlined in production builds only;
+  `npm run dev` still uses a `<link>`).
   **This Next.js differs from training data — read `node_modules/next/dist/docs/` first.**
 - Tailwind CSS v4 via `@tailwindcss/postcss` (`postcss.config.mjs`). Theme tokens in `app/globals.css`.
 - Content: **Sanity** (project `f3et2lbb`, dataset `production`, public). Hosted Studio in
@@ -91,7 +93,9 @@ for, and converts visitors to enrolments (currently via Humanitix).
   `--color-midnight_text #13214a` (headings), `--color-tint #eef5f5`. Font: DM Sans.
 - Body text `text-black/70` (min `/60` for small text — contrast).
 - Alternate `Section tint` between neighbours so backgrounds never double up.
-- Wrap below-the-fold content in `Reveal`; never the hero (LCP).
+- Wrap below-the-fold content in `Reveal`; never the hero (LCP). Only the main hero photo uses
+  `preload` (`priority` is deprecated); its mobile and desktop copies share one `src` and `sizes`
+  so it downloads once. Every other image stays lazy.
 - Rich text renders through `PortableText`: bold, italic, web links, faculty links (to the
   About Us card) and live tags (contact email, next course date and venue). Plain-text mentions
   of the contact email become mailto links. Client components get plain props, not rich text.
