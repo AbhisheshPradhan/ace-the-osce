@@ -13,7 +13,7 @@ export default async function Logo() {
 				alt={siteName}
 				width={logo.asset.width}
 				height={logo.asset.height}
-				priority
+				loading="eager"
 				unoptimized
 				className="h-12 w-auto"
 			/>

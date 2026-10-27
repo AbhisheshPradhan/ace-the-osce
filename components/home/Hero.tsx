@@ -89,6 +89,8 @@ export default async function Hero() {
 	const carousel = [hero.image, hero.sideImage, hero.topImage, hero.cornerImage].filter(
 		(image): image is ImageWithAlt => Boolean(image),
 	);
+	// The main photo is in both layouts. Same src and sizes give one URL, so it downloads once.
+	const mainSizes = "(min-width: 1960px) 430px, (min-width: 1536px) 22vw, (min-width: 1024px) 20vw, 85vw";
 
 	return (
 		<section className="relative overflow-hidden bg-linear-to-b from-tint to-white pt-36 pb-14 lg:flex lg:flex-col lg:justify-center lg:min-h-[calc(6rem+30vw)] 2xl:min-h-[calc(6rem+min(33vw,645px))] lg:pt-32 lg:pb-8">
@@ -172,8 +174,8 @@ export default async function Hero() {
 										src={imageUrl(image, { width: 1200 })}
 										alt={image.alt}
 										fill
-										priority={i === 0}
-										sizes="85vw"
+										preload={i === 0}
+										sizes={i === 0 ? mainSizes : "85vw"}
 										style={focus(image)}
 										className="object-cover"
 									/>
@@ -196,11 +198,11 @@ export default async function Hero() {
 				<StatTile stat={years} className="col-start-4 row-start-1 bg-primary/75" />
 				<div className="relative col-start-2 col-span-2 row-start-2 row-span-2 overflow-hidden">
 					<Image
-						src={imageUrl(hero.image, { width: 1000 })}
+						src={imageUrl(hero.image, { width: 1200 })}
 						alt={hero.image.alt}
 						fill
-						priority
-						sizes="(min-width: 1960px) 430px, (min-width: 1536px) 22vw, 20vw"
+						preload
+						sizes={mainSizes}
 						style={focus(hero.image)}
 						className="object-cover"
 					/>
