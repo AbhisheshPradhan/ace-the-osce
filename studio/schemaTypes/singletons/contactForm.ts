@@ -19,9 +19,14 @@ export const contactForm = defineType({
     {
       ...editElsewhere(
         'sharedNote',
-        'Shown on the Contact page and the Home page, with the email and venue boxes and a map beside and below it. The sitting options come from the OSCE Guide\'s sittings; the email address and venue details are in Site settings.',
+        "Shown on the Contact page and the Home page, with the email and venue boxes and a map beside and below it. The sitting options come from the OSCE Guide's sittings; the email address and venue details are in Site settings.",
         [
-          {id: 'osceGuidePage', type: 'osceGuidePage', title: 'OSCE Guide'},
+          {
+            id: 'osceGuidePage',
+            type: 'osceGuidePage',
+            title: 'ACEM sittings',
+            path: 'sittings.items',
+          },
           {id: 'siteSettings', type: 'siteSettings', title: 'Site settings'},
         ],
       ),
@@ -32,8 +37,18 @@ export const contactForm = defineType({
     text('nameLabel', 'Name label', 'form'),
     text('emailLabel', 'Email label', 'form'),
     text('sittingLabel', 'Sitting label', 'form'),
-    text('optionalLabel', 'Optional marker', 'form', 'Shown after the sitting label, for example "(optional)".'),
-    text('sittingPlaceholder', 'Sitting placeholder', 'form', 'The first, empty choice in the list.'),
+    text(
+      'optionalLabel',
+      'Optional marker',
+      'form',
+      'Shown after the sitting label, for example "(optional)".',
+    ),
+    text(
+      'sittingPlaceholder',
+      'Sitting placeholder',
+      'form',
+      'The first, empty choice in the list.',
+    ),
     text('notSureOption', '"Not sure" choice', 'form', 'The last choice in the list.'),
     text('messageLabel', 'Message label', 'form'),
     text('submitLabel', 'Send button', 'form'),
@@ -59,8 +74,18 @@ export const contactForm = defineType({
       group: 'messages',
       description: 'Shown if the form is switched off on the server.',
     }),
-    text('emailHeading', 'Email box heading', 'boxes', 'For example "Prefer email?". The address itself is in Site settings.'),
-    text('venueHeading', 'Venue box heading', 'boxes', 'For example "Find the Simulation Centre". The venue details are in Site settings.'),
+    text(
+      'emailHeading',
+      'Email box heading',
+      'boxes',
+      'For example "Prefer email?". The address itself is in Site settings.',
+    ),
+    text(
+      'venueHeading',
+      'Venue box heading',
+      'boxes',
+      'For example "Find the Simulation Centre". The venue details are in Site settings.',
+    ),
     text('mapLinkLabel', 'Map link', 'boxes', 'Opens the venue in Google Maps.'),
   ],
   preview: {prepare: () => ({title: 'Contact form'})},
