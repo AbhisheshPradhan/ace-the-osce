@@ -49,6 +49,18 @@ export const courseDates = defineType({
         {id: 'eveningTaster', type: 'eveningTaster', title: 'Evening Taster'},
       ],
     ),
+    editElsewhere(
+      'sittingsNote',
+      'Also check the ACEM exam sittings. They are shown on the OSCE Guide page and in the contact form\'s "Which sitting?" dropdown:',
+      [
+        {
+          id: 'osceGuidePage',
+          type: 'osceGuidePage',
+          title: 'ACEM sittings',
+          path: 'sittings.items',
+        },
+      ],
+    ),
     defineField({
       name: 'bookingUrl',
       title: 'Humanitix link',

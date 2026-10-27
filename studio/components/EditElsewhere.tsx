@@ -2,7 +2,8 @@ import {Card, Flex, Stack, Text} from '@sanity/ui'
 import {defineField} from 'sanity'
 import {IntentLink} from 'sanity/router'
 
-type Target = {id: string; type: string; title: string}
+// `path` opens the document focused on that field, e.g. 'sittings.items'.
+type Target = {id: string; type: string; title: string; path?: string}
 
 // A read-only note inside a page document saying "this part is edited somewhere else",
 // with links straight to those documents. It stores nothing.
@@ -16,7 +17,14 @@ export function editElsewhere(name: string, text: string, targets: Target[] = []
             <Flex gap={4} wrap="wrap">
               {targets.map((target) => (
                 <Text key={target.id} size={1} weight="semibold">
-                  <IntentLink intent="edit" params={{id: target.id, type: target.type}}>
+                  <IntentLink
+                    intent="edit"
+                    params={{
+                      id: target.id,
+                      type: target.type,
+                      ...(target.path && {path: target.path}),
+                    }}
+                  >
                     Edit {target.title} →
                   </IntentLink>
                 </Text>

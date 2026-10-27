@@ -57,7 +57,7 @@ export function HelpPane() {
           <Card padding={3} radius={2} tone="primary" border>
             <Text size={1}>
               <strong>Publish</strong> (bottom right of each form) updates the live website in about
-              2 minutes. Until then your changes are a private draft. Made a mistake? Use{' '}
+              a minute. Until then your changes are a private draft. Made a mistake? Use{' '}
               <strong>Discard changes</strong> before publishing, or the clock icon (
               <strong>History</strong>) at the top of the form to restore an earlier version.
             </Text>
@@ -80,6 +80,13 @@ export function HelpPane() {
                 Click <strong>Publish</strong>. The dates, times and Enrol buttons update everywhere
                 on the site.
               </Step>
+              <Step>
+                Check the ACEM exam sittings with the <strong>Edit ACEM sittings</strong> link at
+                the top of the form. Add a sitting once ACEM announces it and remove ones that have
+                passed, then <strong>Publish</strong>. They are shown on the OSCE Guide page and in
+                the contact form&apos;s &ldquo;Which sitting?&rdquo; dropdown, which always ends
+                with &ldquo;Not sure yet&rdquo;.
+              </Step>
             </Steps>
             <Para>
               To change what a course card says (title, venue, description, highlights, photo), open{' '}
@@ -91,8 +98,9 @@ export function HelpPane() {
             <Para>
               Enter the next dates as soon as you know them. Until the site is next published it
               keeps showing the finished course; Humanitix shows the event as ended in the meantime.
-              Once a course&apos;s end time has passed, any publish switches the site to
-              &ldquo;dates to be announced&rdquo; and the buttons to &ldquo;get in touch&rdquo;.
+              Once a course&apos;s end time has passed, any publish switches the site to its
+              &ldquo;no dates&rdquo; wording (such as &ldquo;Next course dates coming soon&rdquo;)
+              and the booking buttons to contact buttons.
             </Para>
           </Section>
 
@@ -105,8 +113,8 @@ export function HelpPane() {
             </Para>
             <Para>
               In longer text you can make words bold or italic, add a link, link a doctor&apos;s
-              name to their profile (person icon), or insert the contact email or next course date,
-              which then update by themselves.
+              name to their profile (person icon), or insert the contact email, next course date or
+              venue, which then update by themselves.
             </Para>
           </Section>
 
@@ -145,6 +153,10 @@ export function HelpPane() {
               The email address, venue address, logo and site icon are in{' '}
               <strong>Site-wide → Site settings</strong>. Menu links are in <strong>Header</strong>,
               footer links and tagline in <strong>Footer</strong>.
+            </Para>
+            <Para>
+              The contact email is shown on the site and is also where contact form messages are
+              sent. Change it only if the team&apos;s inbox changes.
             </Para>
           </Section>
         </Stack>
