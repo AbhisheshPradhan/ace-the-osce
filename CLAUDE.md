@@ -147,5 +147,7 @@ Sanity needs none: the dataset is public and the project id is in the fetch scri
   Evening Taster (Humanitix says "Laura, one of our recent prize-winning candidates"), day schedule,
   recent course photos (the in-person course card image is AI-generated; the hero uses 2017
   photos), matching headshots (Dr Susie Stapledon has none), recent testimonials (the newest is
-  a 2023 email), faculty FACEM status and any exam prizes, Humanitix API key, privacy policy
-  review, and a source for the home page "50+ courses / 500+ attendees" stats.
+  a 2023 email), faculty FACEM status and any exam prizes, Humanitix API key, and privacy
+  policy review.
+- The home page stats "50+ courses delivered / 500+ attendees" are confirmed as minimums (the
+  real numbers may be higher), so they can also go in the share image and other copy.
