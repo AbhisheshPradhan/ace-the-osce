@@ -9,13 +9,34 @@ const organizationId = `${site.url}/#organization`;
 
 export async function getOrganization() {
 	const { siteSettings } = await getContent();
+	const { siteName, email, siteIcon, logo, shareImage, defaultDescription } = siteSettings;
 	return {
-		"@type": "EducationalOrganization",
+		"@type": "Organization",
 		"@id": organizationId,
-		name: siteSettings.siteName,
+		name: siteName,
 		url: site.url,
-		email: siteSettings.email,
+		// Google shows the logo in a square crop, so prefer the square site icon.
+		logo: siteIcon
+			? imageUrl(siteIcon, { width: 512, height: 512, format: "png" })
+			: imageUrl(logo),
+		...(shareImage && {
+			image: imageUrl(shareImage, { width: 1200, height: 630, format: "jpg" }),
+		}),
+		...(defaultDescription && { description: defaultDescription }),
+		email,
 		foundingDate: String(site.foundedYear),
+	};
+}
+
+export async function getWebSite() {
+	const { siteSettings } = await getContent();
+	return {
+		"@type": "WebSite",
+		"@id": `${site.url}/#website`,
+		url: site.url,
+		name: siteSettings.siteName,
+		inLanguage: "en-AU",
+		publisher: { "@id": organizationId },
 	};
 }
 

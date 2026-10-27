@@ -7,7 +7,7 @@ import CourseOptions from "@/components/home/CourseOptions";
 import FacultyPreview from "@/components/home/FacultyPreview";
 import Hero from "@/components/home/Hero";
 import Testimonials from "@/components/home/Testimonials";
-import { getOrganization } from "@/lib/structured-data";
+import { getOrganization, getWebSite } from "@/lib/structured-data";
 
 // Title and description come from the root layout (Home's SEO settings in Sanity).
 export const metadata: Metadata = {
@@ -17,7 +17,12 @@ export const metadata: Metadata = {
 export default async function Home() {
 	return (
 		<>
-			<JsonLd data={{ "@context": "https://schema.org", ...(await getOrganization()) }} />
+			<JsonLd
+				data={{
+					"@context": "https://schema.org",
+					"@graph": [await getOrganization(), await getWebSite()],
+				}}
+			/>
 			<Hero />
 			<AboutCourse />
 			<CourseOptions showDetailsLink />

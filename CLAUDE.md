@@ -69,7 +69,7 @@ for, and converts visitors to enrolments (currently via Humanitix).
   time), `facultySlug()` (About Us anchors from names).
 - `lib/site.ts` — code-owned settings: site URL, `isLiveSite`, founding year.
 - `lib/schedule.ts` — build-time "is this course upcoming?" check and `buildYear`.
-- `lib/structured-data.ts` — schema.org Organization + Event JSON-LD (events only if upcoming).
+- `lib/structured-data.ts` — schema.org Organization + WebSite (home) + Event JSON-LD (events only if upcoming).
 - `app/` routes: `/` home, `/course/` (course + events JSON-LD), `/acem-osce/` (exam guide +
   Article JSON-LD), `/about-us/`, `/contact/`, `/privacy/` (draft, needs team review),
   `not-found`, `sitemap.ts`, `robots.ts`, `favicon.ico` (fallback; the site icon is in Sanity).
