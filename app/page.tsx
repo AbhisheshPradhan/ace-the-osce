@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import CallToAction from "@/components/CallToAction";
 import JsonLd from "@/components/JsonLd";
 import AboutCourse from "@/components/home/AboutCourse";
@@ -7,6 +8,11 @@ import FacultyPreview from "@/components/home/FacultyPreview";
 import Hero from "@/components/home/Hero";
 import Testimonials from "@/components/home/Testimonials";
 import { getOrganization } from "@/lib/structured-data";
+
+// Title and description come from the root layout (Home's SEO settings in Sanity).
+export const metadata: Metadata = {
+	alternates: { canonical: "/" },
+};
 
 export default async function Home() {
 	return (
