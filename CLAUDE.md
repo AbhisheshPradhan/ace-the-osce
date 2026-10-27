@@ -95,7 +95,8 @@ for, and converts visitors to enrolments (currently via Humanitix).
 - Alternate `Section tint` between neighbours so backgrounds never double up.
 - Wrap below-the-fold content in `Reveal`; never the hero (LCP). Only the main hero photo uses
   `preload` (`priority` is deprecated); its mobile and desktop copies share one `src` and `sizes`
-  so it downloads once. Every other image stays lazy.
+  so it downloads once. Every other image stays lazy, except the About-the-course photo
+  (eager, no `Reveal`), whose top shows in the first desktop screen and can be the LCP.
 - Rich text renders through `PortableText`: bold, italic, web links, faculty links (to the
   About Us card) and live tags (contact email, next course date and venue). Plain-text mentions
   of the contact email become mailto links. Client components get plain props, not rich text.

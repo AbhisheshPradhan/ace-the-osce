@@ -45,18 +45,18 @@ export default async function AboutCourse() {
 						</Link>
 					)}
 				</Reveal>
-				<Reveal
-					delay={150}
-					className="relative aspect-4/3 overflow-hidden rounded-3xl shadow-2xl"
-				>
+				{/* No Reveal and not lazy: on desktop the top of this photo is in the first screen and
+				    can be the LCP. */}
+				<div className="relative aspect-4/3 overflow-hidden rounded-3xl shadow-2xl">
 					<Image
 						src={imageUrl(image, { width: 1200, height: 900 })}
 						alt={image.alt}
 						fill
+						loading="eager"
 						sizes="(min-width: 1024px) 50vw, 100vw"
 						className="object-cover"
 					/>
-				</Reveal>
+				</div>
 			</div>
 		</Section>
 	);
