@@ -43,7 +43,8 @@ for, and converts visitors to enrolments (currently via Humanitix).
   credentials). Testimonial stars show only when a real rating is entered. The OSCE Guide in
   Sanity keeps ACEM's source URL and a Last checked date.
 - `.vercel.app` deployments are `noindex` + robots-disallowed; only `https://acetheosce.com.au`
-  is indexable (`isLiveSite` in `lib/site.ts`, derived from `VERCEL_PROJECT_PRODUCTION_URL`).
+  is indexable (`isLiveSite` in `lib/site.ts`, from `SITE_URL`, set in Vercel Production, falling
+  back to `VERCEL_PROJECT_PRODUCTION_URL`).
 - Google Analytics isn't set up and the privacy policy doesn't mention it. If `NEXT_PUBLIC_GA_ID`
   is ever set, add analytics and cookie wording back to the Privacy Policy in Sanity.
 
@@ -52,7 +53,8 @@ for, and converts visitors to enrolments (currently via Humanitix).
 - `studio/` — Sanity Studio. `schemaTypes/` (documents, singletons, reusable objects),
   `structure.ts` (sidebar: Courses, Pages, People, Site-wide), `constants.ts` (singleton ids,
   internal page list for link dropdowns), `components/EditElsewhere.tsx` ("Also on this page"
-  notes). Run with `npm run dev` inside `studio/`; publish with `npx sanity deploy`.
+  notes; a target `path` opens the linked document at that field). Run with `npm run dev`
+  inside `studio/`; publish with `npx sanity deploy`.
 - `scripts/fetch-content.mjs` — fetches published content, resolves references and image assets,
   fails the build if a singleton is missing. New singleton types must be added to `SINGLETONS`.
 - `lib/cms.ts` — `getContent()`, types mirroring the Studio schema (update both together),
@@ -99,20 +101,33 @@ for, and converts visitors to enrolments (currently via Humanitix).
 ## Environment variables (see `.env.example`)
 
 `RESEND_API_KEY`, `CONTACT_FROM_EMAIL` (contact form), `NEXT_PUBLIC_GA_ID` (GA4, optional),
-`GOOGLE_SITE_VERIFICATION` (optional; prefer DNS verification), `SITE_URL` (optional override).
+`SITE_URL` (optional override).
 Sanity needs none: the dataset is public and the project id is in the fetch script.
 
-## Status (as of 26 Oct 2026)
+## Status (as of 27 Oct 2026)
 
-- Deployed to Vercel for a showcase on `.vercel.app`; real domain not switched yet.
+- **Live** at https://acetheosce.com.au. DNS stays at SiteGround (A record and `www` CNAME point
+  to Vercel); the old WordPress hosting is paid until about mid-2027. Don't touch the MX/SPF
+  records, they serve the domain's email.
+- Search Console is verified by DNS TXT and the sitemap is submitted.
+- Contact form: Resend domain verified (Tokyo region, records `send`, `rsend`,
+  `resend._domainkey` at SiteGround), key in Vercel, tested end to end. Messages go to the contact
+  email in Site settings (`acetheosce@gmail.com`, the team's inbox; we have no access to it).
 - Sanity integration is done: every page reads from Sanity at build time. The one-off seed script
   that imported the old content was removed (it's in git history); **don't recreate one** — the
   team edits in the Studio now and a seed would overwrite their changes.
 - Publishing in Sanity deploys the site: a Sanity webhook (production, published only) calls a
-  Vercel deploy hook. The hosted Studio is https://ace-the-osce.sanity.studio (`npx sanity deploy`
-  in studio/). Draft Mode preview was skipped: the team edits about twice a year.
-- Still to do: invite the doctors as Editors, a one-page editing guide for them; optional daily
-  scheduled rebuild so passed courses flip without a publish.
+  Vercel deploy hook, once per published document. The hosted Studio is
+  https://ace-the-osce.sanity.studio (`npx sanity deploy` in studio/), with a "How to update the
+  website" guide at the top of the sidebar. Draft Mode preview was skipped: the team edits about
+  twice a year.
+- The course runs about twice a year (February and July). Dates and booking holds one course at
+  a time and links to the ACEM sittings, which also fill the contact form's sitting dropdown.
+  Past sittings stay listed on purpose until the team removes them.
+- Still to do: invite the doctors as Editors; hand over accounts (admin invites for
+  `acetheosce@gmail.com` on GA, Search Console, Sanity and Resend; transfer the Vercel project
+  to a Pro team, as Hobby is for non-commercial use); GA4 — add analytics/cookie wording to the
+  Privacy Policy in Sanity first, then set `NEXT_PUBLIC_GA_ID`. No daily scheduled rebuild for now.
 - The 24 July 2026 course has passed, so the site shows "Next course dates coming soon".
   Awaiting next dates + Humanitix link from the team.
 - Waiting on the team for: next dates, price, group size, packages and pricing (Humanitix 2026:2 listed a free online evening
@@ -121,5 +136,5 @@ Sanity needs none: the dataset is public and the project id is in the fetch scri
   Evening Taster (Humanitix says "Laura, one of our recent prize-winning candidates"), day schedule,
   recent course photos (the in-person course card image is AI-generated; the hero uses 2017
   photos), matching headshots (Dr Susie Stapledon has none), recent testimonials (the newest is
-  a 2023 email), faculty FACEM status and any exam prizes, Humanitix API key, DNS access, GA4
-  ID, privacy policy review.
+  a 2023 email), faculty FACEM status and any exam prizes, Humanitix API key, GA4 ID, privacy
+  policy review, and a source for the home page "50+ courses / 500+ attendees" stats.

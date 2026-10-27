@@ -29,9 +29,6 @@ export async function generateMetadata(): Promise<Metadata> {
 			template: `%s | ${siteName}`,
 		},
 		description: defaultDescription,
-		...(process.env.GOOGLE_SITE_VERIFICATION && {
-			verification: { google: process.env.GOOGLE_SITE_VERIFICATION },
-		}),
 		...(siteIcon && {
 			icons: {
 				icon: { url: imageUrl(siteIcon, { width: 64, height: 64, format: "png" }), type: "image/png" },

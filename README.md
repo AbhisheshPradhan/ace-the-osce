@@ -31,23 +31,25 @@ npm run build
 
 All text, dates, links and images are edited in the **Sanity Studio** at
 https://ace-the-osce.sanity.studio, not in the code. Click **Publish** and a Sanity webhook
-triggers a Vercel deploy: the change is live in about two minutes.
+triggers a Vercel deploy: the change is live in about a minute. Each published document
+triggers its own deploy.
 
 The Studio sidebar:
 
 | Group | What's there |
 | --- | --- |
-| Courses | **Dates and booking** (the Humanitix link and both courses' dates), the In-person course and Evening Taster card text, the course options section |
+| Courses | **Dates and booking** (the Humanitix link, both courses' dates, and a link to the ACEM sittings), the In-person course and Evening Taster card text, the course options section |
 | Pages | Home, The Course, OSCE Guide, About Us, Contact, Privacy Policy, Page not found |
 | People | Faculty, Testimonials |
-| Site-wide | Header, Footer, Contact form, Call to action, Site settings (email, venue, logo, icon, share image) |
+| Site-wide | Header, Footer, Contact form, Call to action, Site settings (email, venue, logo, icon, share image). The contact email is also where contact form messages are sent |
 
 ### New course dates
 
 Open **Dates and booking**, update the Humanitix link and the start and end times (Sydney
-time), and publish. Every date and booking button on the site updates together. Once a
-course's end time has passed, the site switches to its "dates to be announced" text on the
-next build.
+time), and publish. Every date and booking button on the site updates together. Then check
+the ACEM sittings (the **Edit ACEM sittings** link at the top of the form): they are shown on
+the OSCE Guide page and in the contact form's "Which sitting?" dropdown. Once a course's end
+time has passed, the site switches to its "no dates" wording on the next build.
 
 ### Running the Studio
 
@@ -69,15 +71,20 @@ Set these in Vercel (Project → Settings → Environment Variables). See `.env.
 | Variable | Purpose |
 | --- | --- |
 | `RESEND_API_KEY` | Sends contact form messages (required for the form to work) |
-| `CONTACT_FROM_EMAIL` | Sender address on a domain verified in Resend |
+| `CONTACT_FROM_EMAIL` | Sender address on a domain verified in Resend (defaults to `Ace the OSCE website <noreply@acetheosce.com.au>`) |
 | `NEXT_PUBLIC_GA_ID` | Google Analytics 4 measurement ID (optional; update the privacy policy if you set it) |
-| `GOOGLE_SITE_VERIFICATION` | Search Console HTML-tag code (optional; DNS verification is preferred) |
+| `SITE_URL` | `https://acetheosce.com.au` in Production. Makes the site indexable and sets canonical URLs |
 
 Sanity needs no variables: the dataset is public.
 
 ## Deployment notes
 
-- `.vercel.app` deployments are hidden from search engines. The site becomes indexable
-  automatically once `acetheosce.com.au` is the project's production domain in Vercel.
+- Live at https://acetheosce.com.au. Only that domain is indexable (`SITE_URL`, falling back to
+  Vercel's production domain); `.vercel.app` deployments are hidden from search engines.
+- DNS is managed at SiteGround: the A record and `www` CNAME point to Vercel, plus Resend's
+  records (`send`, `rsend`, `resend._domainkey`) and the Google Search Console TXT. Leave the
+  MX and SPF records alone; they belong to the domain's email.
+- The contact form sends through Resend to the contact email in Site settings, with the
+  visitor as Reply-To.
 - Old WordPress URLs are redirected in `next.config.ts`.
 - See `CLAUDE.md` for architecture decisions and conventions.
