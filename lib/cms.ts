@@ -258,6 +258,8 @@ export type Content = {
 		siteIcon?: SanityImage;
 		defaultDescription?: string;
 		shareImage?: ImageWithAlt;
+		// Used instead of shareImage while the in-person course is upcoming.
+		courseShareImage?: ImageWithAlt;
 	};
 	faculty: Faculty[];
 	testimonial: Testimonial[];

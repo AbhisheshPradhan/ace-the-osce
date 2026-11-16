@@ -10,12 +10,12 @@ import SectionHeading from "@/components/SectionHeading";
 import { ArrowRightIcon, CheckIcon } from "@/components/icons";
 import { getContent, imageUrl } from "@/lib/cms";
 import { site } from "@/lib/site";
-import { getSchedule } from "@/lib/schedule";
+import { getSchedule, getShareImage } from "@/lib/schedule";
 
 export async function generateMetadata(): Promise<Metadata> {
-	const { osceGuidePage, siteSettings } = await getContent();
+	const { osceGuidePage } = await getContent();
 	const { title, description } = osceGuidePage.seo ?? {};
-	const { shareImage } = siteSettings;
+	const shareImage = await getShareImage();
 	return {
 		title,
 		description,
@@ -159,12 +159,13 @@ export default async function AcemOsceGuide() {
 							description={sittings.heading.description}
 						/>
 					</Reveal>
-					<div className="mt-12 grid md:grid-cols-3 gap-6">
+					{/* Flex rather than grid so one or two sittings sit centred. */}
+					<div className="mt-12 flex flex-wrap justify-center gap-6">
 						{sittings.items.map((s, i) => (
 							<Reveal
 								key={s.sitting}
 								delay={i * 100}
-								className="h-full rounded-2xl bg-white p-6 shadow-lg border border-border"
+								className="w-full md:w-[calc((100%-3rem)/3)] rounded-2xl bg-white p-6 shadow-lg border border-border"
 							>
 								<p className="text-sm font-semibold uppercase tracking-widest text-primary">
 									Sitting {s.sitting}

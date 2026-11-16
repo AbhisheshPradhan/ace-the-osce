@@ -109,6 +109,14 @@ export const siteSettings = defineType({
       group: 'seo',
       description: 'The picture shown when a link to the site is shared. 1200×630.',
     }),
+    defineField({
+      name: 'courseShareImage',
+      title: 'Share image while a course is open',
+      type: 'imageWithAlt',
+      group: 'seo',
+      description:
+        'Optional, 1200×630. Used instead of the share image until the in-person course in Dates and booking ends, e.g. one showing the next course date. Upload a new one for each course.',
+    }),
   ],
   preview: {prepare: () => ({title: 'Site settings'})},
 })

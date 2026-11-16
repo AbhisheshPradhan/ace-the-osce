@@ -5,6 +5,7 @@ import GlobalHeader from "@/components/GlobalHeader";
 import Analytics from "@/components/Analytics";
 import Footer from "@/components/Footer";
 import { getContent, imageUrl } from "@/lib/cms";
+import { getShareImage } from "@/lib/schedule";
 import { isLiveSite, site } from "@/lib/site";
 
 const dmSans = DM_Sans({
@@ -18,7 +19,8 @@ export const ensureStatic = "navigation";
 // the default title is the Home page's. app/favicon.ico stays as the fallback icon.
 export async function generateMetadata(): Promise<Metadata> {
 	const { siteSettings, homePage } = await getContent();
-	const { siteName, defaultDescription, shareImage, siteIcon } = siteSettings;
+	const { siteName, defaultDescription, siteIcon } = siteSettings;
+	const shareImage = await getShareImage();
 
 	return {
 		metadataBase: new URL(site.url),

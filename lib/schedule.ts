@@ -22,3 +22,11 @@ export async function getSchedule() {
 		onlineOptionAvailable: showOnlineOption && (!taster || tasterUpcoming),
 	};
 }
+
+// The link-preview image: the dated course one while that course is ahead, otherwise the
+// evergreen one. Switches back on the first build after the course ends.
+export async function getShareImage() {
+	const { siteSettings } = await getContent();
+	const { inPersonUpcoming } = await getSchedule();
+	return (inPersonUpcoming && siteSettings.courseShareImage) || siteSettings.shareImage;
+}
