@@ -23,7 +23,8 @@ export default function ContactForm({
 	text,
 	email,
 }: {
-	sittings: string[];
+	// The value sent is the sitting alone; the label may add a note.
+	sittings: { value: string; label: string }[];
 	text: ContactFormText;
 	email: string;
 }) {
@@ -114,8 +115,8 @@ export default function ContactForm({
 				>
 					<option value="">{text.sittingPlaceholder}</option>
 					{sittings.map((sitting) => (
-						<option key={sitting} value={sitting}>
-							{sitting}
+						<option key={sitting.value} value={sitting.value}>
+							{sitting.label}
 						</option>
 					))}
 					<option value={text.notSureOption}>{text.notSureOption}</option>

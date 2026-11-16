@@ -121,6 +121,10 @@ export type Content = {
 			topicsHeading?: string;
 			topics?: string[];
 		};
+		teaching?: {
+			heading: SectionHeading;
+			items?: { title: string; description?: string }[];
+		};
 		faq: {
 			heading: SectionHeading;
 			items: FaqItem[];
@@ -151,6 +155,8 @@ export type Content = {
 			heading: SectionHeading;
 			items: {
 				sitting: string;
+				// Shown after the sitting in the contact form dropdown, e.g. "course enrolments open".
+				contactNote?: string;
 				dates: string;
 				location: string;
 				applicationsOpen: string;

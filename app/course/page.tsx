@@ -6,6 +6,7 @@ import JsonLd from "@/components/JsonLd";
 import PageHero from "@/components/PageHero";
 import CourseDay from "@/components/home/CourseDay";
 import CourseOptions from "@/components/home/CourseOptions";
+import HowWeTeach from "@/components/home/HowWeTeach";
 import Testimonials from "@/components/home/Testimonials";
 import { ArrowRightIcon } from "@/components/icons";
 import { getContent } from "@/lib/cms";
@@ -35,7 +36,8 @@ export default async function CoursePage() {
 			<CourseOptions />
 			<CourseDay />
 			<Testimonials />
-			<Faq items={faq.items} eyebrow={faq.heading.eyebrow} title={faq.heading.title}>
+			<HowWeTeach />
+			<Faq tint items={faq.items} eyebrow={faq.heading.eyebrow} title={faq.heading.title}>
 				{faq.guideLinkLabel && (
 					<p className="mt-10 text-center text-black/70">
 						{faq.guideLinkIntro}{" "}

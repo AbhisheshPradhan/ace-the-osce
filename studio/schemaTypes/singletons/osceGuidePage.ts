@@ -113,6 +113,13 @@ export const osceGuidePage = defineType({
                   validation: (rule) => rule.required(),
                 }),
                 defineField({
+                  name: 'contactNote',
+                  title: 'Note in the contact form',
+                  type: 'string',
+                  description:
+                    'Optional. Shown after the sitting in the contact form\'s "Which sitting?" dropdown, for example "course enrolments open". Remove it when enrolments close.',
+                }),
+                defineField({
                   name: 'dates',
                   title: 'Exam dates',
                   type: 'string',

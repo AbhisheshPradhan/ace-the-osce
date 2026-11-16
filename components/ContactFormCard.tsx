@@ -25,7 +25,10 @@ export default async function ContactFormCard({ className = "" }: { className?: 
 			{heading && <h2 className="text-2xl font-semibold text-midnight_text">{heading}</h2>}
 			{intro && <p className="mt-2 mb-8 text-black/70">{intro}</p>}
 			<ContactForm
-				sittings={osceGuidePage.sittings.items.map((s) => s.sitting)}
+				sittings={osceGuidePage.sittings.items.map((s) => ({
+					value: s.sitting,
+					label: s.contactNote ? `${s.sitting} (${s.contactNote})` : s.sitting,
+				}))}
 				text={text}
 				email={siteSettings.email}
 			/>

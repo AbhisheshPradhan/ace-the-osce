@@ -10,6 +10,7 @@ export const coursePage = defineType({
   groups: [
     {name: 'hero', title: 'Page heading', default: true},
     {name: 'howItWorks', title: 'How it works'},
+    {name: 'teaching', title: 'How we teach'},
     {name: 'faq', title: 'FAQ'},
     {name: 'seo', title: 'Search and sharing'},
   ],
@@ -31,7 +32,7 @@ export const coursePage = defineType({
           {id: 'callToAction', type: 'callToAction', title: 'Call to action'},
         ],
       ),
-      group: ['hero', 'howItWorks', 'faq'],
+      group: ['hero', 'howItWorks', 'teaching', 'faq'],
     },
     defineField({name: 'hero', title: 'Page heading', type: 'pageHero', group: 'hero'}),
     defineField({
@@ -76,6 +77,38 @@ export const coursePage = defineType({
           title: 'Topics',
           type: 'array',
           of: [defineArrayMember({type: 'string'})],
+        }),
+      ],
+    }),
+    defineField({
+      name: 'teaching',
+      title: 'How we teach',
+      type: 'object',
+      group: 'teaching',
+      options: {collapsible: false},
+      description: 'Shown after the testimonials. Leave the list empty to hide the section.',
+      fields: [
+        defineField({name: 'heading', title: 'Heading', type: 'sectionHeading'}),
+        defineField({
+          name: 'items',
+          title: 'Methods',
+          type: 'array',
+          of: [
+            defineArrayMember({
+              name: 'method',
+              type: 'object',
+              fields: [
+                defineField({
+                  name: 'title',
+                  title: 'Title',
+                  type: 'string',
+                  validation: (rule) => rule.required(),
+                }),
+                defineField({name: 'description', title: 'Description', type: 'text', rows: 3}),
+              ],
+              preview: {select: {title: 'title', subtitle: 'description'}},
+            }),
+          ],
         }),
       ],
     }),
