@@ -123,7 +123,7 @@ export type Content = {
 		};
 		teaching?: {
 			heading: SectionHeading;
-			items?: { title: string; description?: string }[];
+			items?: { title: string; description?: string; image?: ImageWithAlt }[];
 		};
 		faq: {
 			heading: SectionHeading;
