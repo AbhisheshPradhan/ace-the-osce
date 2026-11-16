@@ -147,6 +147,26 @@ export function HelpPane() {
             </Para>
           </Question>
 
+          <Question title="How do I change the picture shown when the site is shared?">
+            <Bullets>
+              <Bullet>
+                Both are in <Open doc="siteSettings" /> (Search and sharing tab).
+              </Bullet>
+              <Bullet>
+                <strong>Share image while a course is open</strong> is used until the in-person
+                course ends, so it can show the course date. Upload a new one for each course
+                (1200×630).
+              </Bullet>
+              <Bullet>
+                After the course ends, links show the normal <strong>Share image</strong> again.
+              </Bullet>
+              <Bullet>
+                Facebook and LinkedIn keep old previews: refresh them with Facebook&apos;s Sharing
+                Debugger or LinkedIn&apos;s Post Inspector.
+              </Bullet>
+            </Bullets>
+          </Question>
+
           <Question title="How do I change the free online option?">
             <Bullets>
               <Bullet>

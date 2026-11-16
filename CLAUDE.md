@@ -162,5 +162,10 @@ Sanity needs none: the dataset is public and the project id is in the fetch scri
   photos), matching headshots (Dr Susie Stapledon has none), recent testimonials (the newest is
   a 2023 email), faculty FACEM status and any exam prizes, Humanitix API key, and privacy
   policy review.
+- Link previews use Site settings → "Share image while a course is open" (`courseShareImage`,
+  via `getShareImage()` in `lib/schedule.ts`) until the in-person course ends, then the evergreen
+  `shareImage`. The current one (Feb 2027: "Next course · Fri 12 Feb 2027 · Westmead, Sydney ·
+  Enrolments open") was built as HTML in DM Sans and screenshotted at 1200×630; make a new
+  dated one each round. No price or early bird on it until Humanitix is final.
 - The home page stats "50+ courses delivered / 500+ attendees" are confirmed as minimums (the
   real numbers may be higher), so they can also go in the share image and other copy.
