@@ -38,7 +38,7 @@ The Studio sidebar:
 
 | Group | What's there |
 | --- | --- |
-| Courses | **Dates and booking** (the Humanitix link, both courses' dates, and a link to the ACEM sittings), the In-person course and Evening Taster card text, the course options section |
+| Courses | **Dates and booking** (the Humanitix link, the course dates, the free online option switch, and a link to the ACEM sittings), the In-person course and Free online option card text, the course options section |
 | Pages | Home, The Course, OSCE Guide, About Us, Contact, Privacy Policy, Page not found |
 | People | Faculty, Testimonials |
 | Site-wide | Header, Footer, Contact form, Call to action, Site settings (email, venue, logo, icon, share image). The contact email is also where contact form messages are sent |
@@ -48,8 +48,15 @@ The Studio sidebar:
 Open **Dates and booking**, update the Humanitix link and the start and end times (Sydney
 time), and publish. Every date and booking button on the site updates together. Then check
 the ACEM sittings (the **Edit ACEM sittings** link at the top of the form): they are shown on
-the OSCE Guide page and in the contact form's "Which sitting?" dropdown. Once a course's end
-time has passed, the site switches to its "no dates" wording on the next build.
+the OSCE Guide page and in the contact form's "Which sitting?" dropdown, where a sitting's
+optional **Note in the contact form** appears in brackets (e.g. "course enrolments open").
+Once a course's end time has passed, the site switches to its "no dates" wording on the next
+build.
+
+The second course card is the **Free online option** (currently the free course workbook).
+The **Show the free online option** switch in Dates and booking hides it. Its dates are
+optional: leave them empty for something always available, or set them for an online session
+on a set date, which then gets a date line and its own Google event.
 
 ### Running the Studio
 

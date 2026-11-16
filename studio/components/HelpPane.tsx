@@ -121,8 +121,9 @@ export function HelpPane() {
                 site uses it.
               </Step>
               <Step n={4}>
-                Set <strong>Starts</strong> and <strong>Ends</strong> for the in-person course and
-                the Evening Taster (Sydney time).
+                Set <strong>Starts</strong> and <strong>Ends</strong> for the in-person course
+                (Sydney time). Check the <strong>Show the free online option</strong> switch and,
+                only if it is a session on a set date, its dates.
               </Step>
               <Step n={5}>Click {publish}.</Step>
               <Step n={6}>
@@ -131,7 +132,10 @@ export function HelpPane() {
                   ACEM sittings
                 </Open>{' '}
                 (also linked at the top of Dates and booking). Add the next sitting if ACEM has
-                announced it, remove ones that have passed, then click <strong>Publish</strong>.
+                announced it, remove ones that have passed, and move the{' '}
+                <strong>Note in the contact form</strong> (e.g. &ldquo;course enrolments
+                open&rdquo;) to the sitting this course prepares for. Then click{' '}
+                <strong>Publish</strong>.
               </Step>
               <Step n={7}>
                 After a minute, open acetheosce.com.au and check the dates and the booking buttons.
@@ -141,6 +145,26 @@ export function HelpPane() {
               Changing what a course card says (description, highlights, photo)? That&apos;s in{' '}
               <Open doc="inPersonCourse" /> and <Open doc="eveningTaster" />.
             </Para>
+          </Question>
+
+          <Question title="How do I change the free online option?">
+            <Bullets>
+              <Bullet>
+                It is the second course card: right now the free course workbook. Its text and photo
+                are in <Open doc="eveningTaster" />.
+              </Bullet>
+              <Bullet>
+                To hide it, turn off <strong>Show the free online option</strong> in{' '}
+                <Open doc="courseDates" />. The in-person card then shows on its own.
+              </Bullet>
+              <Bullet>
+                For an online session on a set date (like the old Evening Taster), enter its dates
+                there too. Leave them empty for something that is always available.
+              </Bullet>
+              <Bullet>
+                Then update the text that mentions it: the links under the switch open each place.
+              </Bullet>
+            </Bullets>
           </Question>
 
           <Question title="What happens when a course finishes?">
@@ -167,6 +191,11 @@ export function HelpPane() {
               </Bullet>
               <Bullet>
                 The &ldquo;Which sitting?&rdquo; dropdown updates by itself when you publish.
+              </Bullet>
+              <Bullet>
+                A sitting&apos;s <strong>Note in the contact form</strong> is shown after it in
+                brackets, e.g. &ldquo;2027.1 (course enrolments open)&rdquo;. The message you
+                receive shows just the sitting.
               </Bullet>
               <Bullet>&ldquo;Not sure yet&rdquo; is always added at the end.</Bullet>
             </Bullets>

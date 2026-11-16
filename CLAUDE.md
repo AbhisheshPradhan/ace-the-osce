@@ -145,10 +145,18 @@ Sanity needs none: the dataset is public and the project id is in the fetch scri
   `eveningTaster`): the free course workbook ("OSCE Performance Materials", v4.4), emailed as
   Google Drive links on Humanitix sign-up. A switch in Dates and booking shows or hides it; its
   dates are optional (empty = always available, no Event JSON-LD; dated = an online session).
-- Ideas from the workbook, not yet done: a "How we teach" section on /course (ACEM examiner
-  checks stations, rapid cycle deliberate practice, video review, Gather–Analyse–Summarise
-  debriefs) and a "How to prepare for the ACEM OSCE" SEO page (team to approve the text; keep
-  LIPS, scripts, the password and contact details out).
+- /course has a "How we teach" section (`components/home/HowWeTeach.tsx`, The Course → How we
+  teach) from the workbook, each card with a photo reused from the home hero/About images. The
+  materials card's highlights list the workbook's sections.
+- ACEM sitting 2026.2 was removed; 2027.1 carries the contact-form note "course enrolments
+  open" (optional `contactNote` per sitting; the form submits the sitting alone).
+- Waiting on the final Humanitix page (it still says 19 Feb; the early bird "until 24th June"
+  is stale) before adding prices ($845 early bird / $955 seen) to the in-person card, an FAQ
+  and the Event offers, and a Sanity-controlled announcement bar with a browser-checked
+  "hide after" date. No early bird mention until then.
+- Parked idea: a "How to prepare for the ACEM OSCE" SEO page from the workbook (team approves
+  the text; keep LIPS, scripts, the password and contact details out), linked from the OSCE
+  Guide, the Course FAQ and the footer.
 - Waiting on the team for: price, group size, day schedule,
   recent course photos (the in-person course card image is AI-generated; the hero uses 2017
   photos), matching headshots (Dr Susie Stapledon has none), recent testimonials (the newest is
