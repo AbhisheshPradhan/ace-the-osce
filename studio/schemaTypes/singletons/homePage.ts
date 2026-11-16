@@ -21,7 +21,7 @@ export const homePage = defineType({
         [
           {id: 'courseDates', type: 'courseDates', title: 'Dates and booking'},
           {id: 'inPersonCourse', type: 'inPersonCourse', title: 'In-person course'},
-          {id: 'eveningTaster', type: 'eveningTaster', title: 'Evening Taster'},
+          {id: 'eveningTaster', type: 'eveningTaster', title: 'Free online option'},
           {
             id: 'courseOptionsSection',
             type: 'courseOptionsSection',
@@ -68,9 +68,10 @@ export const homePage = defineType({
         }),
         defineField({
           name: 'tasterLabel',
-          title: 'Evening Taster label',
+          title: 'Free online option label',
           type: 'string',
-          description: 'Shown before the next Evening Taster date, when there is one.',
+          description:
+            'Shown in the ticked list while the free online option is on, followed by its date if it has one. For example "Free online course materials".',
         }),
         defineField({
           name: 'noDatesText',

@@ -11,7 +11,14 @@ import {
 	ClockIcon,
 	MapPinIcon,
 } from "@/components/icons";
-import { formatCourseDate, formatTimeRange, getContent, imageUrl } from "@/lib/cms";
+import {
+	type Course,
+	type CourseDates,
+	formatCourseDate,
+	formatTimeRange,
+	getContent,
+	imageUrl,
+} from "@/lib/cms";
 import { getSchedule } from "@/lib/schedule";
 
 export default async function CourseOptions({
@@ -20,10 +27,14 @@ export default async function CourseOptions({
 	showDetailsLink?: boolean;
 }) {
 	const { courseOptionsSection, courseDates, eveningTaster, inPersonCourse } = await getContent();
-	const { inPersonUpcoming, tasterUpcoming } = await getSchedule();
-	const cards = [
-		{ id: "online-session", course: eveningTaster, dates: courseDates.taster, isUpcoming: tasterUpcoming},
-		{ id: "in-person-course", course: inPersonCourse, dates: courseDates.inPerson, isUpcoming: inPersonUpcoming},
+	const { inPersonUpcoming, onlineOptionAvailable } = await getSchedule();
+	// The free online option has dates only when it is a session; course materials have none.
+	// Its id stays "online-session" so the GA click reports carry on.
+	const cards: { id: string; course: Course; dates?: CourseDates; isUpcoming: boolean }[] = [
+		...(courseDates.showOnlineOption !== false
+			? [{ id: "online-session", course: eveningTaster, dates: courseDates.taster, isUpcoming: onlineOptionAvailable }]
+			: []),
+		{ id: "in-person-course", course: inPersonCourse, dates: courseDates.inPerson, isUpcoming: inPersonUpcoming },
 	];
 	const { heading } = courseOptionsSection;
 
@@ -37,7 +48,7 @@ export default async function CourseOptions({
 						description={heading.description}
 					/>
 				</Reveal>
-				<div className="mt-14 grid lg:grid-cols-2 gap-8">
+				<div className={cards.length > 1 ? "mt-14 grid lg:grid-cols-2 gap-8" : "mt-14 mx-auto max-w-3xl"}>
 					{cards.map(({ id, course, dates, isUpcoming }, i) => (
 						<Reveal key={id} delay={i * 150}>
 							<article className="flex h-full flex-col overflow-hidden rounded-3xl bg-white shadow-lg border border-border">
@@ -55,13 +66,15 @@ export default async function CourseOptions({
 										{course.title}
 									</h3>
 									<ul className="mt-4 flex flex-wrap gap-x-6 gap-y-2 text-base text-black/70">
-										<li className="inline-flex items-center gap-2">
-											<CalendarIcon className="h-5 w-5 text-primary" />
-											{isUpcoming
-												? formatCourseDate(dates.startDate)
-												: courseOptionsSection.noDatesText}
-										</li>
-										{isUpcoming && (
+										{dates && (
+											<li className="inline-flex items-center gap-2">
+												<CalendarIcon className="h-5 w-5 text-primary" />
+												{isUpcoming
+													? formatCourseDate(dates.startDate)
+													: courseOptionsSection.noDatesText}
+											</li>
+										)}
+										{isUpcoming && dates && (
 											<li className="inline-flex items-center gap-2">
 												<ClockIcon className="h-5 w-5 text-primary" />
 												{formatTimeRange(dates.startDate, dates.endDate)}

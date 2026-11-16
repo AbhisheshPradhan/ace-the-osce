@@ -13,7 +13,7 @@ export const courseOptionsSection = defineType({
       'Shown on Home and The Course. The two cards are edited separately:',
       [
         {id: 'inPersonCourse', type: 'inPersonCourse', title: 'In-person course'},
-        {id: 'eveningTaster', type: 'eveningTaster', title: 'Evening Taster'},
+        {id: 'eveningTaster', type: 'eveningTaster', title: 'Free online option'},
       ],
     ),
     defineField({name: 'heading', title: 'Heading', type: 'sectionHeading'}),

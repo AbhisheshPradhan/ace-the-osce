@@ -2,8 +2,13 @@ import {defineField, defineType} from 'sanity'
 import {CalendarIcon} from '@sanity/icons/Calendar'
 import {editElsewhere} from '../../components/EditElsewhere'
 
-// Start and end of one course run, in Sydney time.
-function dates(name: string, title: string) {
+type DatesValue = {startDate?: string; endDate?: string} | undefined
+
+// Start and end of one course run, in Sydney time. Optional dates may be left empty, but
+// need both a start and an end once either is filled in.
+function dates(name: string, title: string, optional = false) {
+  const isFilled = (parent: unknown) =>
+    Boolean((parent as DatesValue)?.startDate || (parent as DatesValue)?.endDate)
   return defineField({
     name,
     title,
@@ -15,7 +20,10 @@ function dates(name: string, title: string) {
         title: 'Starts',
         type: 'datetime',
         description: 'Sydney time.',
-        validation: (rule) => rule.required(),
+        validation: (rule) =>
+          optional
+            ? rule.custom((start, {parent}) => (start || !isFilled(parent) ? true : 'Required'))
+            : rule.required(),
       }),
       defineField({
         name: 'endDate',
@@ -23,9 +31,10 @@ function dates(name: string, title: string) {
         type: 'datetime',
         description: 'Sydney time.',
         validation: (rule) =>
-          rule.required().custom((end, {parent}) => {
-            const start = (parent as {startDate?: string} | undefined)?.startDate
-            return !end || !start || end > start ? true : 'Must be after the start time'
+          (optional ? rule : rule.required()).custom((end, {parent}) => {
+            if (!end) return optional && isFilled(parent) ? 'Required' : true
+            const start = (parent as DatesValue)?.startDate
+            return !start || end > start ? true : 'Must be after the start time'
           }),
       }),
     ],
@@ -46,7 +55,7 @@ export const courseDates = defineType({
       'Update this before each course. The text on each course card is edited separately:',
       [
         {id: 'inPersonCourse', type: 'inPersonCourse', title: 'In-person course'},
-        {id: 'eveningTaster', type: 'eveningTaster', title: 'Evening Taster'},
+        {id: 'eveningTaster', type: 'eveningTaster', title: 'Free online option'},
       ],
     ),
     editElsewhere(
@@ -66,11 +75,40 @@ export const courseDates = defineType({
       title: 'Humanitix link',
       type: 'url',
       description:
-        'Used by every booking button on the site: Enrol now, Register for free, and the banners.',
+        'Used by every booking button on the site: Enrol now, the free online option, and the banners.',
       validation: (rule) => rule.required().uri({scheme: ['https']}),
     }),
     dates('inPerson', 'In-person course'),
-    dates('taster', 'Evening Taster'),
+    defineField({
+      name: 'showOnlineOption',
+      title: 'Show the free online option',
+      type: 'boolean',
+      description:
+        'The second course card (for example free course materials, or an online Evening Taster). Off hides its card and its line in the Home page hero.',
+      initialValue: true,
+    }),
+    editElsewhere(
+      'onlineOptionNote',
+      'Turning it on or off, or changing what it is? Also check the text that mentions it:',
+      [
+        {id: 'eveningTaster', type: 'eveningTaster', title: 'Free online option card'},
+        {
+          id: 'courseOptionsSection',
+          type: 'courseOptionsSection',
+          title: 'Course options description',
+          path: 'heading',
+        },
+        {id: 'coursePage', type: 'coursePage', title: 'The Course FAQ', path: 'faq.items'},
+        {id: 'coursePage', type: 'coursePage', title: 'The Course search description', path: 'seo'},
+        {id: 'homePage', type: 'homePage', title: 'Home hero label', path: 'hero.tasterLabel'},
+      ],
+    ),
+    {
+      ...dates('taster', 'Free online option', true),
+      description:
+        'Only for a session on a set date, such as an Evening Taster. Leave empty for something that is always available, such as course materials.',
+      hidden: ({document}) => document?.showOnlineOption === false,
+    },
   ],
   preview: {prepare: () => ({title: 'Dates and booking'})},
 })

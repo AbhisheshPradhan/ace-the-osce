@@ -65,7 +65,7 @@ export default async function Hero() {
 	const { homePage, courseDates, inPersonCourse } = await getContent();
 	const { hero } = homePage;
 	const { inPerson, taster } = courseDates;
-	const { inPersonUpcoming, tasterUpcoming } = await getSchedule();
+	const { inPersonUpcoming, onlineOptionAvailable } = await getSchedule();
 	const keyFacts = [
 		{
 			icon: CalendarIcon,
@@ -75,12 +75,15 @@ export default async function Hero() {
 		},
 		{ icon: MapPinIcon, text: inPersonCourse.venue },
 		{ icon: CheckIcon, text: hero.paymentNote },
-		...(tasterUpcoming
+		// The free online option: its label, plus the date when it is a dated session.
+		...(onlineOptionAvailable && hero.tasterLabel
 			? [
-					{
-						icon: ClockIcon,
-						text: `${hero.tasterLabel} · ${formatShortDate(taster.startDate, { year: false })}, ${formatTime(taster.startDate)}`,
-					},
+					taster
+						? {
+								icon: ClockIcon,
+								text: `${hero.tasterLabel} · ${formatShortDate(taster.startDate, { year: false })}, ${formatTime(taster.startDate)}`,
+							}
+						: { icon: CheckIcon, text: hero.tasterLabel },
 				]
 			: []),
 	].filter((fact) => fact.text);

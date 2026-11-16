@@ -72,8 +72,15 @@ export type Testimonial = {
 };
 
 export type Content = {
-	courseDates: { bookingUrl: string; inPerson: CourseDates; taster: CourseDates };
+	courseDates: {
+		bookingUrl: string;
+		inPerson: CourseDates;
+		showOnlineOption?: boolean;
+		// Only for an online session on a set date; empty for e.g. course materials.
+		taster?: CourseDates;
+	};
 	inPersonCourse: Course;
+	// The free online option card (course materials or a dated session like the Evening Taster).
 	eveningTaster: Course;
 	homePage: {
 		seo?: Seo;

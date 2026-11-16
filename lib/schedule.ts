@@ -11,8 +11,14 @@ export const buildYear = new Date(builtAt).getFullYear();
 // booking in Sanity).
 export async function getSchedule() {
 	const { courseDates } = await getContent();
+	const { showOnlineOption = true, taster } = courseDates;
+	// A dated online session (e.g. the Evening Taster) that hasn't ended yet.
+	const tasterUpcoming = showOnlineOption && !!taster && builtAt < Date.parse(taster.endDate);
 	return {
 		inPersonUpcoming: builtAt < Date.parse(courseDates.inPerson.endDate),
-		tasterUpcoming: builtAt < Date.parse(courseDates.taster.endDate),
+		tasterUpcoming,
+		// The free online option can be booked: always when it has no dates (course materials),
+		// otherwise until its session ends.
+		onlineOptionAvailable: showOnlineOption && (!taster || tasterUpcoming),
 	};
 }

@@ -2,7 +2,7 @@ import {defineArrayMember, defineField, defineType} from 'sanity'
 import {DocumentIcon} from '@sanity/icons/Document'
 import {editElsewhere} from '../../components/EditElsewhere'
 
-// The text on the in-person course and Evening Taster cards. Both share one set of fields
+// The text on the in-person course and free online option cards. Both share one set of fields
 // and each exists once. Their dates and the Humanitix link are in Dates and booking.
 function course(
   name: string,
@@ -82,8 +82,10 @@ export const inPersonCourse = course('inPersonCourse', 'In-person course', {
   cta: 'Enrol now',
 })
 
-export const eveningTaster = course('eveningTaster', 'Evening Taster', {
-  title: 'Evening Taster: Tips and Tricks',
-  venue: 'Online via Zoom',
-  cta: 'Register for free',
+// The free online option: course materials, or a dated online session such as the Evening
+// Taster. The id stays `eveningTaster`, from when it was always the Taster.
+export const eveningTaster = course('eveningTaster', 'Free online option', {
+  title: 'OSCE Performance Materials: Tips and Tricks',
+  venue: 'Online',
+  cta: 'Get the free materials',
 })

@@ -139,12 +139,17 @@ Sanity needs none: the dataset is public and the project id is in the fetch scri
   `enrol_click` as key events (Admin → Data display → Events → Recent events) once each has fired
   for real. This GA version can't add a key event by name in advance, and "Create event" would
   duplicate it. GA4 is live (`G-KLYWSTMVJG`). No daily scheduled rebuild for now.
-- The 24 July 2026 course has passed, so the site shows "Next course dates coming soon".
-  Awaiting next dates + Humanitix link from the team.
-- Waiting on the team for: next dates, price, group size, packages and pricing (Humanitix 2026:2 listed a free online evening
-  session and a paid in-person day; the old About Us "two intensive days" meant the two together
-  and was removed; consider saying in-person includes the online session), who leads the
-  Evening Taster (Humanitix says "Laura, one of our recent prize-winning candidates"), day schedule,
+- Next course: Friday 12 Feb 2027, 8am–5pm (Humanitix `osce2027`; the team said its "19th Feb"
+  is a mistake). From 2027 the course is one in-person day. The Evening Taster was dropped; the
+  second card is now the "Free online option" (Studio label; document id still
+  `eveningTaster`): the free course workbook ("OSCE Performance Materials", v4.4), emailed as
+  Google Drive links on Humanitix sign-up. A switch in Dates and booking shows or hides it; its
+  dates are optional (empty = always available, no Event JSON-LD; dated = an online session).
+- Ideas from the workbook, not yet done: a "How we teach" section on /course (ACEM examiner
+  checks stations, rapid cycle deliberate practice, video review, Gather–Analyse–Summarise
+  debriefs) and a "How to prepare for the ACEM OSCE" SEO page (team to approve the text; keep
+  LIPS, scripts, the password and contact details out).
+- Waiting on the team for: price, group size, day schedule,
   recent course photos (the in-person course card image is AI-generated; the hero uses 2017
   photos), matching headshots (Dr Susie Stapledon has none), recent testimonials (the newest is
   a 2023 email), faculty FACEM status and any exam prizes, Humanitix API key, and privacy

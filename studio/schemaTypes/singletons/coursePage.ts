@@ -21,7 +21,7 @@ export const coursePage = defineType({
         [
           {id: 'courseDates', type: 'courseDates', title: 'Dates and booking'},
           {id: 'inPersonCourse', type: 'inPersonCourse', title: 'In-person course'},
-          {id: 'eveningTaster', type: 'eveningTaster', title: 'Evening Taster'},
+          {id: 'eveningTaster', type: 'eveningTaster', title: 'Free online option'},
           {
             id: 'courseOptionsSection',
             type: 'courseOptionsSection',

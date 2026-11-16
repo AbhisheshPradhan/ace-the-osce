@@ -14,7 +14,7 @@ export const sitePages = [
 export const singletons = {
   courseDates: 'Dates and booking',
   inPersonCourse: 'In-person course',
-  eveningTaster: 'Evening Taster',
+  eveningTaster: 'Free online option',
   homePage: 'Home',
   coursePage: 'The Course',
   osceGuidePage: 'OSCE Guide',

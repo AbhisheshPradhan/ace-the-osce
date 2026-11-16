@@ -78,7 +78,7 @@ function event(
 			"@type": "Offer",
 			url: courseDates.bookingUrl,
 			availability: "https://schema.org/InStock",
-			// The Evening Taster is free.
+			// The online session is free.
 			...(online && { price: 0, priceCurrency: "AUD" }),
 		},
 		...(online && { isAccessibleForFree: true }),
@@ -93,7 +93,8 @@ export async function getUpcomingEvents() {
 		...(inPersonUpcoming
 			? [event(content, content.inPersonCourse, content.courseDates.inPerson, false)]
 			: []),
-		...(tasterUpcoming
+		// Only a dated online session is an event; undated course materials are not.
+		...(tasterUpcoming && content.courseDates.taster
 			? [event(content, content.eveningTaster, content.courseDates.taster, true)]
 			: []),
 	];
