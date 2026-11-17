@@ -34,7 +34,10 @@ for, and converts visitors to enrolments (currently via Humanitix).
   `getContent()` in `lib/cms.ts`. No request-time fetch, no `use cache`.
 - **Sanity is the only source of content.** Don't put copy, dates, links or images back in the
   code. Code keeps only interface text (form field ids, "Applications open", breadcrumbs) and
-  code-owned settings in `lib/site.ts`.
+  code-owned settings in `lib/site.ts`. One deliberate exception, at the owner's request: the
+  enrolment banner (`components/AnnouncementBar.tsx`, text only, no link), whose wording,
+  sitting and early bird deadline are hardcoded and updated by hand each round (the course
+  date still comes from Sanity). Don't move it to Sanity unless asked.
 - Course dates are compared against the **build time** (`BUILD_TIMESTAMP` in `next.config.ts`,
   read in `lib/schedule.ts`). Every booking element (header, mobile menu, hero, course cards,
   call to action, OSCE Guide banner, Google events) switches on the next build after a course

@@ -3,6 +3,7 @@ import { DM_Sans } from "next/font/google";
 import "./globals.css";
 import GlobalHeader from "@/components/GlobalHeader";
 import Analytics from "@/components/Analytics";
+import { showAnnouncement } from "@/components/AnnouncementBar";
 import Footer from "@/components/Footer";
 import { getContent, imageUrl } from "@/lib/cms";
 import { getShareImage } from "@/lib/schedule";
@@ -56,7 +57,9 @@ export async function generateMetadata(): Promise<Metadata> {
 	};
 }
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default async function RootLayout({ children }: LayoutProps<"/">) {
+	// Pages leave room for the fixed header; add the banner's height while it shows.
+	const announcement = await showAnnouncement();
 	return (
 		<html lang="en-AU" className={`${dmSans.variable} h-full antialiased`}>
 			<head>
@@ -72,7 +75,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
 					Skip to content
 				</a>
 				<GlobalHeader />
-				<main id="main" className="flex-1">
+				<main id="main" className={announcement ? "flex-1 pt-9" : "flex-1"}>
 					{children}
 				</main>
 				<Footer />
